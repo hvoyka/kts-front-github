@@ -1,4 +1,27 @@
 :root {
   --black: #000;
   --white: #fff;
+
+  --red1: #ff5555;
+
+  --gray1: #d9d9d9;
+  --gray2: #7e7e7e;
+  --gray3: #f9f9f9;
+}
+
+body {
+  background-color: var(--white);
+  color: var(--black);
+  font-family: 'Roboto', sans-serif;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  line-height: 1.15;
+  margin: 0;
+}
+
+.container {
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
 }
