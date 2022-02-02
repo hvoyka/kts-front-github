@@ -1,17 +1,17 @@
 import {StarIcon} from 'components/icons';
 import React, {FC} from 'react';
-import './GitRepoTile.css';
+import './RepoTile.css';
 
-interface GitRepoTileProps {
+export interface RepoTileProps {
   repoName: string;
   userName: string;
   link: string;
-  imageSrc: string;
+  imageSrc: string | null;
   starsCount: number;
   updatedAt: string;
 }
 
-export const GitRepoTile: FC<GitRepoTileProps> = ({
+export const RepoTile: FC<RepoTileProps> = ({
   repoName,
   userName,
   link,
@@ -22,7 +22,11 @@ export const GitRepoTile: FC<GitRepoTileProps> = ({
   return (
     <div className="repo-tile">
       <div className="repo-tile__image-wrapper">
-        <img src={imageSrc} alt="Repository logo" />
+        {imageSrc ? (
+          <img src={imageSrc} alt="Repository logo" />
+        ) : (
+          <div className="repo-tile__char">{repoName[0].toUpperCase()}</div>
+        )}
       </div>
       <div className="repo-tile__content">
         <div className="repo-tile__name">{repoName}</div>

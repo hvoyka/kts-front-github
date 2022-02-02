@@ -1,1 +1,0 @@
-export {GitRepoTile} from './GitRepoTile';
