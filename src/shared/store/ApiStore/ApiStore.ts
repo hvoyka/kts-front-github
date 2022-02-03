@@ -12,9 +12,10 @@ export default class ApiStore implements IApiStore {
     params: RequestParams<ReqT>
   ): Promise<ApiResponse<SuccessT, ErrorT>> {
     try {
-      const response = await fetch(this.baseUrl, {
+      const response = await fetch(`${this.baseUrl}/${params.endpoint}`, {
         method: params.method,
         headers: params.headers,
+        body: JSON.stringify(params.data),
       });
 
       this.status = response.status;
