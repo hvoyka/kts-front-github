@@ -1,15 +1,9 @@
 import {StarIcon} from 'components/icons';
 import React, {FC} from 'react';
+import {IRepoTile} from 'types';
 import './RepoTile.css';
 
-export interface RepoTileProps {
-  repoName: string;
-  userName: string;
-  link: string;
-  imageSrc: string | null;
-  starsCount: number;
-  updatedAt: string;
-}
+type RepoTileProps = Omit<IRepoTile, 'id'>;
 
 export const RepoTile: FC<RepoTileProps> = ({
   repoName,
