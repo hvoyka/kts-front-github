@@ -1,9 +1,11 @@
-export interface IRepoTile {
+export interface RepoItem {
   id: number;
-  repoName: string;
-  userName: string;
-  link: string;
-  imageSrc: string | null;
-  starsCount: number;
-  updatedAt: string;
+  name: string;
+  url: string;
+  stargazers_count: number;
+  updated_at: string;
+  avatar_url: string | null;
+  owner: {
+    login: string;
+  };
 }

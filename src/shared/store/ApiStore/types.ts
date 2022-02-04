@@ -1,5 +1,5 @@
 // Перечисление методов HTTP-запроса
-enum HTTPMethod {
+export enum HTTPMethod {
   GET = 'GET',
   POST = 'POST',
   PUT = 'PUT',

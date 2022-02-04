@@ -1,11 +1,11 @@
 import {RepoTile, SearchForm} from './components';
-import {IRepoTile} from 'types';
 
 import React, {FC} from 'react';
 import './RepoPanel.css';
+import {RepoItem} from 'types';
 
 interface RepoPanelProps {
-  items: IRepoTile[];
+  items: RepoItem[];
 }
 
 export const RepoPanel: FC<RepoPanelProps> = ({items}) => {
@@ -17,18 +17,10 @@ export const RepoPanel: FC<RepoPanelProps> = ({items}) => {
     <div className="repo-panel">
       <SearchForm onSubmit={handleSearchSubmit} />
       <ul className="repo-panel__list">
-        {items.map((repo) => {
+        {items.map((item) => {
           return (
-            <li>
-              <RepoTile
-                key={repo.id}
-                repoName={repo.repoName}
-                userName={repo.userName}
-                starsCount={repo.starsCount}
-                updatedAt={repo.updatedAt}
-                imageSrc={repo.imageSrc}
-                link={repo.link}
-              />
+            <li key={item.id}>
+              <RepoTile item={item} />
             </li>
           );
         })}

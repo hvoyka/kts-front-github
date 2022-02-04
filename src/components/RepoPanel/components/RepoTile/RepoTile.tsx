@@ -1,38 +1,38 @@
 import {StarIcon} from 'components/icons';
 import React, {FC} from 'react';
-import {IRepoTile} from 'types';
+import {RepoItem} from 'types';
 import './RepoTile.css';
+import dayjs from 'dayjs';
 
-type RepoTileProps = Omit<IRepoTile, 'id'>;
+type RepoTileProps = {
+  item: RepoItem;
+};
 
-export const RepoTile: FC<RepoTileProps> = ({
-  repoName,
-  userName,
-  link,
-  starsCount,
-  imageSrc,
-  updatedAt,
-}) => {
+export const RepoTile: FC<RepoTileProps> = ({item}) => {
+  const {avatar_url, name, owner, url, stargazers_count, updated_at} =
+    item || {};
+  const updateDate = dayjs(updated_at).format('D MMM');
+
   return (
     <div className="repo-tile">
       <div className="repo-tile__image-wrapper">
-        {imageSrc ? (
-          <img src={imageSrc} alt="Repository logo" />
+        {avatar_url ? (
+          <img src={avatar_url} alt="Repository logo" />
         ) : (
-          <div className="repo-tile__char">{repoName[0].toUpperCase()}</div>
+          <div className="repo-tile__char">{owner?.login[0].toUpperCase()}</div>
         )}
       </div>
       <div className="repo-tile__content">
-        <div className="repo-tile__name">{repoName}</div>
-        <a href={link} className="repo-tile__link">
-          {userName}
+        <div className="repo-tile__name">{name}</div>
+        <a href={url} className="repo-tile__link">
+          {owner?.login}
         </a>
         <div className="repo-tile__info">
           <span className="repo-tile__star-wrapper">
             <StarIcon />
           </span>
-          <span className="repo-tile__star-count">{starsCount}</span>
-          <span className="repo-tile__star-date">{updatedAt}</span>
+          <span className="repo-tile__star-count">{stargazers_count}</span>
+          <span className="repo-tile__star-date">Updated {updateDate}</span>
         </div>
       </div>
     </div>
