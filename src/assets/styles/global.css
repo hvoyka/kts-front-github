@@ -1,3 +1,5 @@
+@import '~antd/dist/antd.css';
+
 :root {
   --black: #000;
   --white: #fff;
@@ -26,4 +28,8 @@ body {
   max-width: 1440px;
   width: 100%;
   margin: 0 auto;
+}
+
+.flex {
+  display: flex;
 }

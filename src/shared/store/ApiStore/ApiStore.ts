@@ -1,4 +1,10 @@
-import {ApiResponse, IApiStore, RequestParams, StatusHTTP} from './types';
+import {
+  ApiResponse,
+  HTTPMethod,
+  IApiStore,
+  RequestParams,
+  StatusHTTP,
+} from './types';
 
 export default class ApiStore implements IApiStore {
   baseUrl: string;
@@ -11,15 +17,23 @@ export default class ApiStore implements IApiStore {
   async request<SuccessT, ErrorT = any, ReqT = {}>(
     params: RequestParams<ReqT>
   ): Promise<ApiResponse<SuccessT, ErrorT>> {
-    const url = `${this.baseUrl}/${params.endpoint}?${params.data}`;
+    let url = `${this.baseUrl}/${params.endpoint}`;
+    const isGetMethod = params.method === HTTPMethod.GET;
+    const isPostMethod = params.method === HTTPMethod.POST;
+
+    if (isGetMethod) {
+      url += `?${params.data}`;
+    }
 
     try {
       const response = await fetch(url, {
         method: params.method,
         headers: params.headers,
+        body: isPostMethod ? JSON.stringify(params.data) : null,
       });
 
       this.status = response.status;
+
       const jsonData = await response.json();
 
       return {

@@ -2,6 +2,7 @@ import {ApiResponse} from './../../shared/store/ApiStore/types';
 import {HTTPMethod} from 'shared/store/ApiStore/types';
 import ApiStore from '../../shared/store/ApiStore';
 import {
+  CreateUserRepoParams,
   GetOrganizationReposListParams,
   GetUserReposListParams,
   IGitHubStore,
@@ -11,9 +12,11 @@ import {IOrganizationRepoItem, IUserRepoItem} from 'types';
 
 const BASE_URL = 'https://api.github.com';
 
+const GITHUB_ACCESS_TOKEN = process.env.REACT_APP_GITHUB_ACCESS_TOKEN || '';
+
 export default class GitHubStore implements IGitHubStore {
   private readonly apiStore = new ApiStore(BASE_URL);
-  getUserRequestParams(params: GetUserReposListParams) {
+  getUserReposRequestParams(params: GetUserReposListParams) {
     return {
       method: HTTPMethod.GET,
       endpoint: `users/${params.username}/repos`,
@@ -30,7 +33,24 @@ export default class GitHubStore implements IGitHubStore {
     };
   }
 
-  getOrgRequestParams(params: GetOrganizationReposListParams) {
+  createUserRepoRequestParams(params: CreateUserRepoParams) {
+    return {
+      method: HTTPMethod.POST,
+      endpoint: `user/repos`,
+      headers: {
+        accept: 'application/vnd.github.v3+json',
+        Authorization: `token ${GITHUB_ACCESS_TOKEN}`,
+      },
+
+      data: {
+        name: params.name,
+        description: params.description,
+        private: params.private,
+      },
+    };
+  }
+
+  getOrgReposRequestParams(params: GetOrganizationReposListParams) {
     return {
       method: HTTPMethod.GET,
       endpoint: `orgs/${params.org}/repos`,
@@ -50,14 +70,21 @@ export default class GitHubStore implements IGitHubStore {
   async getUserReposList(
     params: GetUserReposListParams
   ): Promise<ApiResponse<IUserRepoItem[]>> {
-    const requestParams = this.getUserRequestParams(params);
+    const requestParams = this.getUserReposRequestParams(params);
+    return await this.apiStore.request(requestParams);
+  }
+
+  async createUserRepo(
+    params: CreateUserRepoParams
+  ): Promise<ApiResponse<IUserRepoItem>> {
+    const requestParams = this.createUserRepoRequestParams(params);
     return await this.apiStore.request(requestParams);
   }
 
   async getOrganizationReposList(
     params: GetOrganizationReposListParams
   ): Promise<ApiResponse<IOrganizationRepoItem[]>> {
-    const requestParams = this.getOrgRequestParams(params);
+    const requestParams = this.getOrgReposRequestParams(params);
     return await this.apiStore.request(requestParams);
   }
 }

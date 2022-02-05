@@ -13,6 +13,11 @@ export interface GetUserReposListParams {
   per_page?: number;
   page?: number;
 }
+export interface CreateUserRepoParams {
+  name: string;
+  private?: boolean;
+  description?: string;
+}
 export interface GetOrganizationReposListParams {
   org: string;
   type?: ReposTypes;
@@ -26,6 +31,10 @@ export interface IGitHubStore {
   getUserReposList(
     params: GetUserReposListParams
   ): Promise<ApiResponse<IUserRepoItem[]>>;
+
+  createUserRepo(
+    params: CreateUserRepoParams
+  ): Promise<ApiResponse<IUserRepoItem>>;
 
   getOrganizationReposList(
     params: GetOrganizationReposListParams

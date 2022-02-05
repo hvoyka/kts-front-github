@@ -1,4 +1,5 @@
-import {RepoPanel} from 'components';
+import {Col, Row} from 'antd';
+import {CreateRepo, RepoPanel} from 'components';
 import {repoMockItems} from 'constants/mockItemsData';
 
 import React, {FC, useEffect, useState} from 'react';
@@ -22,9 +23,16 @@ const App: FC = () => {
   }, []);
 
   return (
-    <>
-      <RepoPanel items={items} />
-    </>
+    <main className="container">
+      <Row>
+        <Col>
+          <RepoPanel items={items} />
+        </Col>
+        <Col>
+          <CreateRepo />
+        </Col>
+      </Row>
+    </main>
   );
 };
 
