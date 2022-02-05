@@ -14,7 +14,7 @@ export interface GetUserReposListParams {
 }
 
 export interface IGitHubStore {
-  getOrganizationReposList(
+  getUserReposList(
     params: GetUserReposListParams
   ): Promise<ApiResponse<RepoItem[], any>>;
 }
