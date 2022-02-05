@@ -1,10 +1,10 @@
+import {ApiResponse} from 'shared/store/ApiStore/types';
 import {RepoItem} from 'types';
 type ReposTypes = 'all' | 'owner' | 'member';
 
 type ReposSort = 'created' | 'updated' | ' pushed' | ' full_name';
 
 export interface GetUserReposListParams {
-  accept: string;
   username: string;
   type?: ReposTypes;
   sort?: ReposSort;
@@ -13,12 +13,8 @@ export interface GetUserReposListParams {
   page?: number;
 }
 
-export type ApiResp<Items> = {
-  data: Items;
-};
-
 export interface IGitHubStore {
   getOrganizationReposList(
     params: GetUserReposListParams
-  ): Promise<ApiResp<RepoItem[]>>;
+  ): Promise<ApiResponse<RepoItem[], any>>;
 }
