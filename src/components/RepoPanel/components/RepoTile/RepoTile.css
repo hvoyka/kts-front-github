@@ -1,0 +1,94 @@
+.repo-tile {
+  background: var(--white);
+  border-radius: 6px;
+  transition: box-shadow 0.2s;
+  border: 1px solid var(--gray1);
+  padding: 11px;
+  max-width: 357px;
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.repo-tile:hover {
+  box-shadow: 0px 2px 6px rgba(182, 182, 182, 0.25);
+}
+
+.repo-tile__image-wrapper {
+  flex-shrink: 0;
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-right: 12px;
+}
+
+.repo-tile__char {
+  background: var(--red1);
+  color: var(--white);
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  font-weight: bold;
+  font-size: 40px;
+  line-height: 47px;
+}
+
+.repo-tile__content {
+  max-width: 241px;
+  width: 100%;
+}
+
+.repo-tile__name {
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  margin-bottom: 4px;
+  font-weight: bold;
+}
+
+.repo-tile__link {
+  display: block;
+  margin-bottom: 4px;
+  color: var(--gray2);
+  transition: color 0.2s;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  white-space: nowrap;
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.repo-tile__link:hover {
+  color: var(--blue1);
+}
+
+.repo-tile__star-wrapper {
+  margin-right: 4px;
+  width: 14px;
+  height: 14px;
+  vertical-align: middle;
+}
+
+.repo-tile__star-wrapper svg {
+  display: inline-block;
+}
+
+.repo-tile__star-count {
+  vertical-align: middle;
+  margin-right: 20px;
+  color: var(--gray2);
+  font-size: 14px;
+  line-height: 16px;
+}
+
+.repo-tile__star-date {
+  vertical-align: middle;
+  color: var(--gray2);
+  font-size: 14px;
+  line-height: 16px;
+}
