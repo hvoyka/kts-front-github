@@ -28,7 +28,7 @@ export default class GitHubStore implements IGitHubStore {
 
   async getUserReposList(
     params: GetUserReposListParams
-  ): Promise<ApiResponse<RepoItem[], any>> {
+  ): Promise<ApiResponse<RepoItem[]>> {
     const requestParams = this.getRequestParams(params);
     return await this.apiStore.request(requestParams);
   }

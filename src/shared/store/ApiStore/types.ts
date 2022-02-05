@@ -37,7 +37,7 @@ export enum StatusHTTP {
 // TODO: заполнить
 
 // Ответ API
-export type ApiResponse<SuccessT, ErrorT> =
+export type ApiResponse<SuccessT, ErrorT = any> =
   | {
       success: true;
       data: SuccessT;
