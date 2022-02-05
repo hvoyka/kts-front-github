@@ -1,6 +1,6 @@
-import {RepoItem} from 'types';
+import {IUserRepoItem} from 'types';
 
-export const repoMockItems: RepoItem[] = [
+export const repoMockItems: IUserRepoItem[] = [
   {
     id: 1,
     name: 'very-long-repository-name-anddsadsasdas.',

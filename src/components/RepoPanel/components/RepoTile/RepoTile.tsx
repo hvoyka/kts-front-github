@@ -1,11 +1,11 @@
 import {StarIcon} from 'components/icons';
 import React, {FC} from 'react';
-import {RepoItem} from 'types';
+import {IUserRepoItem} from 'types';
 import './RepoTile.css';
 import dayjs from 'dayjs';
 
 type RepoTileProps = {
-  item: RepoItem;
+  item: IUserRepoItem;
 };
 
 export const RepoTile: FC<RepoTileProps> = ({item}) => {

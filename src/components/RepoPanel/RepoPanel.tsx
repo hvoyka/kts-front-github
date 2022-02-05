@@ -2,10 +2,10 @@ import {RepoTile, SearchForm} from './components';
 
 import React, {FC} from 'react';
 import './RepoPanel.css';
-import {RepoItem} from 'types';
+import {IUserRepoItem} from 'types';
 
 interface RepoPanelProps {
-  items: RepoItem[];
+  items: IUserRepoItem[];
 }
 
 export const RepoPanel: FC<RepoPanelProps> = ({items}) => {

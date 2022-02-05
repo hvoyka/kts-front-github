@@ -10,13 +10,13 @@ const gitHubStore = new GitHubStore();
 const App: FC = () => {
   const [items, setItems] = useState(repoMockItems);
 
-  const params: GetUserReposListParams = {
+  const userParams: GetUserReposListParams = {
     username: 'hvoyka',
     direction: 'desc',
   };
 
   useEffect(() => {
-    gitHubStore.getUserReposList(params).then((response) => {
+    gitHubStore.getUserReposList(userParams).then((response) => {
       if (response.success) setItems(response.data);
     });
   }, []);

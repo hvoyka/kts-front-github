@@ -1,14 +1,23 @@
 import {ApiResponse} from 'shared/store/ApiStore/types';
-import {RepoItem} from 'types';
-type ReposTypes = 'all' | 'owner' | 'member';
+import {IOrganizationRepoItem, IUserRepoItem} from 'types';
 
+type ReposTypes = 'all' | 'owner' | 'member';
 type ReposSort = 'created' | 'updated' | ' pushed' | ' full_name';
+type ReposDirection = 'asc ' | 'desc';
 
 export interface GetUserReposListParams {
   username: string;
   type?: ReposTypes;
   sort?: ReposSort;
-  direction?: 'asc ' | 'desc';
+  direction?: ReposDirection;
+  per_page?: number;
+  page?: number;
+}
+export interface GetOrganizationReposListParams {
+  org: string;
+  type?: ReposTypes;
+  sort?: ReposSort;
+  direction?: ReposDirection;
   per_page?: number;
   page?: number;
 }
@@ -16,5 +25,9 @@ export interface GetUserReposListParams {
 export interface IGitHubStore {
   getUserReposList(
     params: GetUserReposListParams
-  ): Promise<ApiResponse<RepoItem[]>>;
+  ): Promise<ApiResponse<IUserRepoItem[]>>;
+
+  getOrganizationReposList(
+    params: GetOrganizationReposListParams
+  ): Promise<ApiResponse<IOrganizationRepoItem[]>>;
 }

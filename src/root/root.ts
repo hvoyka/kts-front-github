@@ -1,15 +1,13 @@
-// Здесь необходимо продемонстрировать создание и использование GitHubStore
-
-import {GetUserReposListParams} from 'store/GitHubStore/types';
+import {GetOrganizationReposListParams} from 'store/GitHubStore/types';
 import GitHubStore from '../store/GitHubStore/GitHubStore';
 
 const gitHubStore = new GitHubStore();
 
-const params: GetUserReposListParams = {
-  username: 'hvoyka',
+const orgParams: GetOrganizationReposListParams = {
+  org: 'ktsstudio',
   direction: 'desc',
 };
 
-gitHubStore.getUserReposList(params).then((result) => {
-  if (result.success) console.log(result);
+gitHubStore.getOrganizationReposList(orgParams).then((response) => {
+  if (response.success) console.log(response.data);
 });
