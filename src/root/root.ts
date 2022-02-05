@@ -10,6 +10,6 @@ const params: GetUserReposListParams = {
   direction: 'desc',
 };
 
-gitHubStore.getOrganizationReposList(params).then((result) => {
+gitHubStore.getUserReposList(params).then((result) => {
   if (result.success) console.log(result);
 });

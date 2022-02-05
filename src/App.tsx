@@ -16,7 +16,7 @@ const App: FC = () => {
   };
 
   useEffect(() => {
-    gitHubStore.getOrganizationReposList(params).then((response) => {
+    gitHubStore.getUserReposList(params).then((response) => {
       if (response.success) setItems(response.data);
     });
   }, []);
