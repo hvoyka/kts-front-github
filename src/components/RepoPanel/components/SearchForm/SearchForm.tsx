@@ -1,13 +1,15 @@
 import {Input} from 'components';
 import {SearchButton} from '../SearchButton';
 import React, {ChangeEvent, FC, FormEvent, useState} from 'react';
-import './SearchForm.css';
+
+import styled from 'styled-components';
 
 interface SearchFormProps {
   onSubmit: (searchValue: string) => void;
+  className?: string;
 }
 
-export const SearchForm: FC<SearchFormProps> = ({onSubmit}) => {
+export const SearchForm: FC<SearchFormProps> = ({className, onSubmit}) => {
   const [searchValue, setSearchValue] = useState('');
   const handleSearchSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -16,7 +18,7 @@ export const SearchForm: FC<SearchFormProps> = ({onSubmit}) => {
   };
 
   return (
-    <form className="search-form" onSubmit={handleSearchSubmit}>
+    <Root className={className} onSubmit={handleSearchSubmit}>
       <Input
         name="searchValue"
         id="searchValue"
@@ -27,6 +29,13 @@ export const SearchForm: FC<SearchFormProps> = ({onSubmit}) => {
         value={searchValue}
       />
       <SearchButton />
-    </form>
+    </Root>
   );
 };
+
+const Root = styled.form`
+  display: grid;
+  grid-template-columns: 295px 50px;
+  grid-template-rows: 1fr;
+  gap: 12px;
+`;

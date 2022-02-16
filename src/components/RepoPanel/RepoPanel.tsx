@@ -1,8 +1,7 @@
 import {RepoTile, SearchForm} from './components';
-
 import React, {FC} from 'react';
-import './RepoPanel.css';
 import {IUserRepoItem} from 'types';
+import styled from 'styled-components';
 
 interface RepoPanelProps {
   items: IUserRepoItem[];
@@ -14,9 +13,9 @@ export const RepoPanel: FC<RepoPanelProps> = ({items}) => {
   };
 
   return (
-    <div className="repo-panel">
-      <SearchForm onSubmit={handleSearchSubmit} />
-      <ul className="repo-panel__list">
+    <Root>
+      <StyledSearchForm onSubmit={handleSearchSubmit} />
+      <List>
         {items.map((item) => {
           return (
             <li key={item.id}>
@@ -24,7 +23,27 @@ export const RepoPanel: FC<RepoPanelProps> = ({items}) => {
             </li>
           );
         })}
-      </ul>
-    </div>
+      </List>
+    </Root>
   );
 };
+
+const Root = styled.div`
+  max-width: 397px;
+  width: 100%;
+  padding: 20px;
+  background: var(--white);
+  max-height: 100vh;
+  overflow-y: auto;
+`;
+
+const StyledSearchForm = styled(SearchForm)`
+  margin-bottom: 20px;
+`;
+
+const List = styled.ul`
+  display: grid;
+  grid-template-columns: 1fr;
+  grid-template-rows: auto;
+  gap: 15px;
+`;
