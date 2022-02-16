@@ -5,6 +5,7 @@ import {repoMockItems} from 'constants/mockItemsData';
 import React, {FC, useEffect, useState} from 'react';
 import GitHubStore from 'store/GitHubStore';
 import {GetUserReposListParams} from 'store/GitHubStore/types';
+import styled from 'styled-components';
 
 const gitHubStore = new GitHubStore();
 
@@ -23,7 +24,7 @@ const App: FC = () => {
   }, []);
 
   return (
-    <main className="container">
+    <Root>
       <Row>
         <Col>
           <RepoPanel items={items} />
@@ -32,8 +33,14 @@ const App: FC = () => {
           <CreateRepo />
         </Col>
       </Row>
-    </main>
+    </Root>
   );
 };
+
+const Root = styled.main`
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+`;
 
 export default App;

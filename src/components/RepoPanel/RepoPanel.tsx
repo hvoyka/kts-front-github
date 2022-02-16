@@ -19,7 +19,12 @@ export const RepoPanel: FC<RepoPanelProps> = ({items}) => {
         {items.map((item) => {
           return (
             <li key={item.id}>
-              <RepoTile item={item} />
+              <RepoTile
+                item={item}
+                onClick={() => {
+                  console.log(item.id);
+                }}
+              />
             </li>
           );
         })}

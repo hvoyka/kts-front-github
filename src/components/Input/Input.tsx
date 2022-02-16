@@ -11,13 +11,7 @@ interface InputProps {
 
 export const Input: FC<InputProps> = ({placeholder, id, name, ...props}) => {
   return (
-    <StyledInput
-      name={name}
-      id={id}
-      placeholder={placeholder}
-      className="input"
-      {...props}
-    />
+    <StyledInput name={name} id={id} placeholder={placeholder} {...props} />
   );
 };
 

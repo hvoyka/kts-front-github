@@ -6,15 +6,16 @@ import styled from 'styled-components';
 
 type RepoTileProps = {
   item: IUserRepoItem;
+  onClick?: () => void;
 };
 
-export const RepoTile: FC<RepoTileProps> = ({item}) => {
-  const {avatar_url, name, owner, url, stargazers_count, updated_at} =
+export const RepoTile: FC<RepoTileProps> = ({item, onClick}) => {
+  const {avatar_url, name, owner, html_url, stargazers_count, updated_at} =
     item || {};
   const updateDate = dayjs(updated_at).format('D MMM');
 
   return (
-    <Root>
+    <Root onClick={onClick}>
       <ImageWrapper>
         {avatar_url ? (
           <img src={avatar_url} alt="Repository logo" />
@@ -25,7 +26,7 @@ export const RepoTile: FC<RepoTileProps> = ({item}) => {
 
       <Content>
         <Name>{name}</Name>
-        <Link href={url}>{owner?.login}</Link>
+        <Link href={html_url}>{owner?.login}</Link>
 
         <div>
           <StarIconWrapper>

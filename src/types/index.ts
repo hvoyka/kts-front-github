@@ -1,7 +1,7 @@
 export interface IUserRepoItem {
   id: number;
   name: string;
-  url: string;
+  html_url: string;
   stargazers_count: number;
   updated_at: string;
   avatar_url: string | null;
@@ -13,7 +13,7 @@ export interface IUserRepoItem {
 export interface IOrganizationRepoItem {
   id: number;
   name: string;
-  url: string;
+  html_url: string;
   stargazers_count: number;
   updated_at: string;
 
