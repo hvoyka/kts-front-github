@@ -1,3 +1,4 @@
+import {Skeleton} from 'antd';
 import React, {ChangeEvent, FC} from 'react';
 import styled from 'styled-components';
 
@@ -6,12 +7,34 @@ interface InputProps {
   id: string;
   name: string;
   value: string;
+  isLoading?: boolean;
   onChange: (event: ChangeEvent<HTMLInputElement>) => void;
 }
 
-export const Input: FC<InputProps> = ({placeholder, id, name, ...props}) => {
+export const Input: FC<InputProps> = ({
+  placeholder,
+  id,
+  name,
+  isLoading,
+  ...props
+}) => {
   return (
-    <StyledInput name={name} id={id} placeholder={placeholder} {...props} />
+    <>
+      {isLoading ? (
+        <Skeleton.Input
+          style={{
+            maxWidth: '295px',
+            width: '100%',
+            height: '50px',
+            borderRadius: '6px',
+          }}
+          active
+          size="large"
+        />
+      ) : (
+        <StyledInput name={name} id={id} placeholder={placeholder} {...props} />
+      )}
+    </>
   );
 };
 

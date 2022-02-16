@@ -1,12 +1,28 @@
+import {Skeleton} from 'antd';
 import {LoupeIcon} from 'components/icons';
 import React, {FC} from 'react';
 import styled from 'styled-components';
 
-export const SearchButton: FC = () => {
+interface SearchButtonProps {
+  isLoading?: boolean;
+  onClick?: () => void;
+}
+
+export const SearchButton: FC<SearchButtonProps> = ({isLoading, onClick}) => {
   return (
-    <Root>
-      <LoupeIcon />
-    </Root>
+    <>
+      {isLoading ? (
+        <Skeleton.Button
+          size="small"
+          style={{width: '50px', height: '50px', borderRadius: '6px'}}
+          active
+        />
+      ) : (
+        <Root onClick={onClick}>
+          <LoupeIcon />
+        </Root>
+      )}
+    </>
   );
 };
 

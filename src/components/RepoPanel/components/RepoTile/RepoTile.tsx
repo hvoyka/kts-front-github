@@ -3,39 +3,67 @@ import React, {FC} from 'react';
 import {IUserRepoItem} from 'types';
 import dayjs from 'dayjs';
 import styled from 'styled-components';
+import {Skeleton} from 'antd';
 
 type RepoTileProps = {
   item: IUserRepoItem;
+  isLoading?: boolean;
   onClick?: () => void;
 };
 
-export const RepoTile: FC<RepoTileProps> = ({item, onClick}) => {
+export const RepoTile: FC<RepoTileProps> = ({item, isLoading, onClick}) => {
   const {avatar_url, name, owner, html_url, stargazers_count, updated_at} =
     item || {};
   const updateDate = dayjs(updated_at).format('D MMM');
 
+  const handleClickOnCard = (
+    event: React.MouseEvent<HTMLDivElement, MouseEvent>
+  ) => {
+    if (event.target instanceof HTMLDivElement) {
+      onClick?.();
+    }
+  };
+
   return (
-    <Root onClick={onClick}>
-      <ImageWrapper>
-        {avatar_url ? (
-          <img src={avatar_url} alt="Repository logo" />
-        ) : (
-          <RepoEmptyAvatart>{owner?.login[0].toUpperCase()}</RepoEmptyAvatart>
-        )}
-      </ImageWrapper>
+    <Root
+      onClick={(event: React.MouseEvent<HTMLDivElement, MouseEvent>) =>
+        handleClickOnCard(event)
+      }
+    >
+      {isLoading ? (
+        <>
+          <Skeleton.Avatar
+            style={{width: '80px', height: '80px', marginRight: '15px'}}
+            active
+            size="default"
+            shape="circle"
+          />
+          <Skeleton active title={false} paragraph={{rows: 2}} />
+        </>
+      ) : (
+        <>
+          <ImageWrapper>
+            {avatar_url ? (
+              <img src={avatar_url} alt="Repository logo" />
+            ) : (
+              <RepoEmptyAvatar>{owner?.login[0].toUpperCase()}</RepoEmptyAvatar>
+            )}
+          </ImageWrapper>
 
-      <Content>
-        <Name>{name}</Name>
-        <Link href={html_url}>{owner?.login}</Link>
+          <Content>
+            <Name>{name}</Name>
+            <Link href={html_url}>{owner?.login}</Link>
 
-        <div>
-          <StarIconWrapper>
-            <StyledStarIcon />
-          </StarIconWrapper>
-          <StarCount>{stargazers_count}</StarCount>
-          <Date>Updated {updateDate}</Date>
-        </div>
-      </Content>
+            <div>
+              <StarIconWrapper>
+                <StyledStarIcon />
+              </StarIconWrapper>
+              <StarCount>{stargazers_count}</StarCount>
+              <Date>Updated {updateDate}</Date>
+            </div>
+          </Content>
+        </>
+      )}
     </Root>
   );
 };
@@ -66,7 +94,7 @@ const ImageWrapper = styled.div`
   margin-right: 12px;
 `;
 
-const RepoEmptyAvatart = styled.div`
+const RepoEmptyAvatar = styled.div`
   background: var(--red1);
   color: var(--white);
   width: 100%;
@@ -95,6 +123,7 @@ const Name = styled.div`
 
 const Link = styled.a`
   display: block;
+  width: min-content;
   margin-bottom: 4px;
   color: var(--gray2);
   transition: color 0.2s;

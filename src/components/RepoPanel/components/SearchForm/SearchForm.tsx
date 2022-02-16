@@ -7,9 +7,14 @@ import styled from 'styled-components';
 interface SearchFormProps {
   onSubmit: (searchValue: string) => void;
   className?: string;
+  isLoading?: boolean;
 }
 
-export const SearchForm: FC<SearchFormProps> = ({className, onSubmit}) => {
+export const SearchForm: FC<SearchFormProps> = ({
+  className,
+  isLoading,
+  onSubmit,
+}) => {
   const [searchValue, setSearchValue] = useState('');
   const handleSearchSubmit = (event: FormEvent) => {
     event.preventDefault();
@@ -26,9 +31,10 @@ export const SearchForm: FC<SearchFormProps> = ({className, onSubmit}) => {
         onChange={(e: ChangeEvent<HTMLInputElement>) =>
           setSearchValue(e.target.value)
         }
+        isLoading={isLoading}
         value={searchValue}
       />
-      <SearchButton />
+      <SearchButton isLoading={isLoading} />
     </Root>
   );
 };

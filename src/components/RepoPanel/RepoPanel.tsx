@@ -1,34 +1,70 @@
-import {RepoTile, SearchForm} from './components';
-import React, {FC} from 'react';
+import {AsidePanel, RepoTile, SearchForm} from './components';
+import React, {FC, useState} from 'react';
 import {IUserRepoItem} from 'types';
 import styled from 'styled-components';
+import {USER_EMPTY_REPO_MOCK} from 'constants/mock';
 
 interface RepoPanelProps {
+  isLoading?: boolean;
   items: IUserRepoItem[];
 }
 
-export const RepoPanel: FC<RepoPanelProps> = ({items}) => {
+export const RepoPanel: FC<RepoPanelProps> = ({items, isLoading}) => {
+  const [isAsidePanelVisible, setIsAsidePanelVisible] = useState(false);
+  const [processableRepo, setProcessableRepo] = useState('');
+
+  const handleAsidePanelClose = () => {
+    setIsAsidePanelVisible(false);
+  };
+
   const handleSearchSubmit = (searchValue: string) => {
     console.log('searchValue', searchValue);
   };
 
+  const handleTileClick = (repoId: number) => {
+    setIsAsidePanelVisible(true);
+    setProcessableRepo(repoId.toString());
+  };
+
   return (
     <Root>
-      <StyledSearchForm onSubmit={handleSearchSubmit} />
-      <List>
-        {items.map((item) => {
-          return (
-            <li key={item.id}>
-              <RepoTile
-                item={item}
-                onClick={() => {
-                  console.log(item.id);
-                }}
-              />
-            </li>
-          );
-        })}
-      </List>
+      <StyledSearchForm onSubmit={handleSearchSubmit} isLoading={isLoading} />
+
+      {isLoading ? (
+        <List>
+          {Array.from(Array(5)).map((_, index) => {
+            return (
+              <li key={index}>
+                <RepoTile item={USER_EMPTY_REPO_MOCK} isLoading={true} />
+              </li>
+            );
+          })}
+        </List>
+      ) : (
+        <>
+          <List>
+            {items.map((item) => {
+              return (
+                <li key={item.id}>
+                  <RepoTile
+                    item={item}
+                    onClick={() => {
+                      handleTileClick(item.id);
+                    }}
+                  />
+                </li>
+              );
+            })}
+          </List>
+        </>
+      )}
+
+      <AsidePanel
+        title="Repository branches"
+        repoId={processableRepo}
+        isVisible={isAsidePanelVisible}
+        onClose={handleAsidePanelClose}
+      />
     </Root>
   );
 };
@@ -38,8 +74,6 @@ const Root = styled.div`
   width: 100%;
   padding: 20px;
   background: var(--white);
-  max-height: 100vh;
-  overflow-y: auto;
 `;
 
 const StyledSearchForm = styled(SearchForm)`
