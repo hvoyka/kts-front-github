@@ -21,9 +21,9 @@ export const RepoPanel: FC<RepoPanelProps> = ({items, isLoading}) => {
     console.log('searchValue', searchValue);
   };
 
-  const handleTileClick = (repoId: number) => {
+  const handleTileClick = (repoName: string) => {
     setIsAsidePanelVisible(true);
-    setProcessableRepo(repoId.toString());
+    setProcessableRepo(repoName);
   };
 
   return (
@@ -49,7 +49,7 @@ export const RepoPanel: FC<RepoPanelProps> = ({items, isLoading}) => {
                   <RepoTile
                     item={item}
                     onClick={() => {
-                      handleTileClick(item.id);
+                      handleTileClick(item.name);
                     }}
                   />
                 </li>
@@ -61,7 +61,7 @@ export const RepoPanel: FC<RepoPanelProps> = ({items, isLoading}) => {
 
       <AsidePanel
         title="Repository branches"
-        repoId={processableRepo}
+        repoName={processableRepo}
         isVisible={isAsidePanelVisible}
         onClose={handleAsidePanelClose}
       />

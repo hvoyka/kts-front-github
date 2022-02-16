@@ -10,6 +10,10 @@ export interface IUserRepoItem {
   };
 }
 
+export interface IUserRepoBranch {
+  name: string;
+}
+
 export interface IOrganizationRepoItem {
   id: number;
   name: string;

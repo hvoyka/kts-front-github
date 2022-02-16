@@ -4,11 +4,12 @@ import ApiStore from '../../shared/store/ApiStore';
 import {
   CreateUserRepoParams,
   GetOrganizationReposListParams,
+  GetUserRepoBranchesParams,
   GetUserReposListParams,
   IGitHubStore,
 } from './types';
 import qs from 'qs';
-import {IOrganizationRepoItem, IUserRepoItem} from 'types';
+import {IOrganizationRepoItem, IUserRepoBranch, IUserRepoItem} from 'types';
 
 const BASE_URL = 'https://api.github.com';
 
@@ -67,10 +68,31 @@ export default class GitHubStore implements IGitHubStore {
     };
   }
 
+  getUserRepoBranchesRequestParams(params: GetUserRepoBranchesParams) {
+    return {
+      method: HTTPMethod.GET,
+      endpoint: `repos/${params.owner}/${params.repo}/branches`,
+      headers: {
+        accept: 'application/vnd.github.v3+json',
+      },
+      data: qs.stringify({
+        per_page: params.per_page,
+        page: params.page,
+      }),
+    };
+  }
+
   async getUserReposList(
     params: GetUserReposListParams
   ): Promise<ApiResponse<IUserRepoItem[]>> {
     const requestParams = this.getUserReposRequestParams(params);
+    return await this.apiStore.request(requestParams);
+  }
+
+  async getUserRepoBranches(
+    params: GetUserRepoBranchesParams
+  ): Promise<ApiResponse<IUserRepoBranch[]>> {
+    const requestParams = this.getUserRepoBranchesRequestParams(params);
     return await this.apiStore.request(requestParams);
   }
 
