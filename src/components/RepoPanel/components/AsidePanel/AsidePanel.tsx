@@ -1,9 +1,10 @@
-import {Drawer} from 'antd';
-import React, {FC, useEffect, useState} from 'react';
-import {GetUserRepoBranchesParams} from 'store/GitHubStore/types';
-import styled from 'styled-components';
-import GitHubStore from 'store/GitHubStore/GitHubStore';
-import {IUserRepoBranch} from 'types';
+import React, { FC, useEffect, useState } from "react";
+
+import { Drawer } from "antd";
+import GitHubStore from "store/GitHubStore/GitHubStore";
+import { GetUserRepoBranchesParams } from "store/GitHubStore/types";
+import styled from "styled-components";
+import { IUserRepoBranch } from "types";
 interface AsidePanelProps {
   title?: string;
   repoName: string;
@@ -23,7 +24,7 @@ export const AsidePanel: FC<AsidePanelProps> = ({
 
   useEffect(() => {
     const repoParams: GetUserRepoBranchesParams = {
-      owner: 'hvoyka',
+      owner: "hvoyka",
       repo: repoName,
     };
 

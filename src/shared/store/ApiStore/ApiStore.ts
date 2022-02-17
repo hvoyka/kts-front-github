@@ -4,7 +4,7 @@ import {
   IApiStore,
   RequestParams,
   StatusHTTP,
-} from './types';
+} from "./types";
 
 export default class ApiStore implements IApiStore {
   baseUrl: string;

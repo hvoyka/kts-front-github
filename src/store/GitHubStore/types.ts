@@ -1,9 +1,9 @@
-import {ApiResponse} from 'shared/store/ApiStore/types';
-import {IOrganizationRepoItem, IUserRepoBranch, IUserRepoItem} from 'types';
+import { ApiResponse } from "shared/store/ApiStore/types";
+import { IOrganizationRepoItem, IUserRepoBranch, IUserRepoItem } from "types";
 
-type ReposTypes = 'all' | 'owner' | 'member';
-type ReposSort = 'created' | 'updated' | ' pushed' | ' full_name';
-type ReposDirection = 'asc ' | 'desc';
+type ReposTypes = "all" | "owner" | "member";
+type ReposSort = "created" | "updated" | " pushed" | " full_name";
+type ReposDirection = "asc " | "desc";
 
 export interface GetUserReposListParams {
   username: string;

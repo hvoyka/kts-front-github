@@ -1,25 +1,26 @@
-import {AsidePanel, RepoTile, SearchForm} from './components';
-import React, {FC, useState} from 'react';
-import {IUserRepoItem} from 'types';
-import styled from 'styled-components';
-import {USER_EMPTY_REPO_MOCK} from 'constants/mock';
+import { USER_EMPTY_REPO_MOCK } from "constants/mock";
+
+import React, { FC, useState } from "react";
+
+import styled from "styled-components";
+import { IUserRepoItem } from "types";
+
+import { AsidePanel, RepoTile, SearchForm } from "./components";
 
 interface RepoPanelProps {
   isLoading?: boolean;
   items: IUserRepoItem[];
 }
 
-export const RepoPanel: FC<RepoPanelProps> = ({items, isLoading}) => {
+export const RepoPanel: FC<RepoPanelProps> = ({ items, isLoading }) => {
   const [isAsidePanelVisible, setIsAsidePanelVisible] = useState(false);
-  const [processableRepo, setProcessableRepo] = useState('');
+  const [processableRepo, setProcessableRepo] = useState("");
 
   const handleAsidePanelClose = () => {
     setIsAsidePanelVisible(false);
   };
 
-  const handleSearchSubmit = (searchValue: string) => {
-    console.log('searchValue', searchValue);
-  };
+  const handleSearchSubmit = (searchValue: string) => {};
 
   const handleTileClick = (repoName: string) => {
     setIsAsidePanelVisible(true);

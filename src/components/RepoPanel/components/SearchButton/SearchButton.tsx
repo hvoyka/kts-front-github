@@ -1,20 +1,21 @@
-import {Skeleton} from 'antd';
-import {LoupeIcon} from 'components/icons';
-import React, {FC} from 'react';
-import styled from 'styled-components';
+import React, { FC } from "react";
+
+import { Skeleton } from "antd";
+import { LoupeIcon } from "components/icons";
+import styled from "styled-components";
 
 interface SearchButtonProps {
   isLoading?: boolean;
   onClick?: () => void;
 }
 
-export const SearchButton: FC<SearchButtonProps> = ({isLoading, onClick}) => {
+export const SearchButton: FC<SearchButtonProps> = ({ isLoading, onClick }) => {
   return (
     <>
       {isLoading ? (
         <Skeleton.Button
           size="small"
-          style={{width: '50px', height: '50px', borderRadius: '6px'}}
+          style={{ width: "50px", height: "50px", borderRadius: "6px" }}
           active
         />
       ) : (

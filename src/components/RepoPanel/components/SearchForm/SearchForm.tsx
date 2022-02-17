@@ -1,8 +1,9 @@
-import {Input} from 'components';
-import {SearchButton} from '../SearchButton';
-import React, {ChangeEvent, FC, FormEvent, useState} from 'react';
+import React, { ChangeEvent, FC, FormEvent, useState } from "react";
 
-import styled from 'styled-components';
+import { Input } from "components";
+import styled from "styled-components";
+
+import { SearchButton } from "../SearchButton";
 
 interface SearchFormProps {
   onSubmit: (searchValue: string) => void;
@@ -15,11 +16,11 @@ export const SearchForm: FC<SearchFormProps> = ({
   isLoading,
   onSubmit,
 }) => {
-  const [searchValue, setSearchValue] = useState('');
+  const [searchValue, setSearchValue] = useState("");
   const handleSearchSubmit = (event: FormEvent) => {
     event.preventDefault();
     onSubmit(searchValue);
-    setSearchValue('');
+    setSearchValue("");
   };
 
   return (

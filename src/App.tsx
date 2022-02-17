@@ -1,11 +1,11 @@
-import {Col, Row} from 'antd';
-import {CreateRepo, RepoPanel} from 'components';
+import React, { FC, useEffect, useState } from "react";
 
-import React, {FC, useEffect, useState} from 'react';
-import GitHubStore from 'store/GitHubStore';
-import {GetUserReposListParams} from 'store/GitHubStore/types';
-import styled from 'styled-components';
-import {IUserRepoItem} from 'types';
+import { Col, Row } from "antd";
+import { CreateRepo, RepoPanel } from "components";
+import GitHubStore from "store/GitHubStore";
+import { GetUserReposListParams } from "store/GitHubStore/types";
+import styled from "styled-components";
+import { IUserRepoItem } from "types";
 
 const gitHubStore = new GitHubStore();
 
@@ -14,8 +14,8 @@ const App: FC = () => {
   const [isRequestLoading, setIsRequestLoading] = useState(false);
 
   const userParams: GetUserReposListParams = {
-    username: 'hvoyka',
-    direction: 'desc',
+    username: "hvoyka",
+    direction: "desc",
   };
 
   useEffect(() => {

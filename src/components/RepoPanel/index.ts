@@ -1,1 +1,1 @@
-export {RepoPanel} from './RepoPanel';
+export { RepoPanel } from "./RepoPanel";

@@ -1,6 +1,7 @@
-import {Skeleton} from 'antd';
-import React, {ChangeEvent, FC} from 'react';
-import styled from 'styled-components';
+import React, { ChangeEvent, FC } from "react";
+
+import { Skeleton } from "antd";
+import styled from "styled-components";
 
 interface InputProps {
   placeholder?: string;
@@ -23,10 +24,10 @@ export const Input: FC<InputProps> = ({
       {isLoading ? (
         <Skeleton.Input
           style={{
-            maxWidth: '295px',
-            width: '100%',
-            height: '50px',
-            borderRadius: '6px',
+            maxWidth: "295px",
+            width: "100%",
+            height: "50px",
+            borderRadius: "6px",
           }}
           active
           size="large"

@@ -1,9 +1,10 @@
-import {StarIcon} from 'components/icons';
-import React, {FC} from 'react';
-import {IUserRepoItem} from 'types';
-import dayjs from 'dayjs';
-import styled from 'styled-components';
-import {Skeleton} from 'antd';
+import React, { FC } from "react";
+
+import { Skeleton } from "antd";
+import { StarIcon } from "components/icons";
+import dayjs from "dayjs";
+import styled from "styled-components";
+import { IUserRepoItem } from "types";
 
 type RepoTileProps = {
   item: IUserRepoItem;
@@ -11,10 +12,10 @@ type RepoTileProps = {
   onClick?: () => void;
 };
 
-export const RepoTile: FC<RepoTileProps> = ({item, isLoading, onClick}) => {
-  const {avatar_url, name, owner, html_url, stargazers_count, updated_at} =
+export const RepoTile: FC<RepoTileProps> = ({ item, isLoading, onClick }) => {
+  const { avatar_url, name, owner, html_url, stargazers_count, updated_at } =
     item || {};
-  const updateDate = dayjs(updated_at).format('D MMM');
+  const updateDate = dayjs(updated_at).format("D MMM");
 
   const handleClickOnCard = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -33,12 +34,12 @@ export const RepoTile: FC<RepoTileProps> = ({item, isLoading, onClick}) => {
       {isLoading ? (
         <>
           <Skeleton.Avatar
-            style={{width: '80px', height: '80px', marginRight: '15px'}}
+            style={{ width: "80px", height: "80px", marginRight: "15px" }}
             active
             size="default"
             shape="circle"
           />
-          <Skeleton active title={false} paragraph={{rows: 2}} />
+          <Skeleton active title={false} paragraph={{ rows: 2 }} />
         </>
       ) : (
         <>
