@@ -6,10 +6,15 @@ import styled from "styled-components";
 
 interface SearchButtonProps {
   isLoading?: boolean;
+  isDisabled?: boolean;
   onClick?: () => void;
 }
 
-export const SearchButton: FC<SearchButtonProps> = ({ isLoading, onClick }) => {
+export const SearchButton: FC<SearchButtonProps> = ({
+  isLoading,
+  isDisabled = false,
+  onClick,
+}) => {
   return (
     <>
       {isLoading ? (
@@ -19,7 +24,7 @@ export const SearchButton: FC<SearchButtonProps> = ({ isLoading, onClick }) => {
           active
         />
       ) : (
-        <Root onClick={onClick}>
+        <Root onClick={onClick} disabled={isDisabled}>
           <LoupeIcon />
         </Root>
       )}

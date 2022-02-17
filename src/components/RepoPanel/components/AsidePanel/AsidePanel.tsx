@@ -42,25 +42,58 @@ export const AsidePanel: FC<AsidePanelProps> = ({
       onClose={onClose}
       visible={isVisible}
     >
-      <Name>Repository: {repoName}</Name>
+      <NameWrapper>
+        Repository: <Name>{repoName}</Name>
+      </NameWrapper>
       <Title>Branches:</Title>
-      <ul>
+      <List>
         {branches.map((branch) => (
-          <li key={branch.name}>{branch.name}</li>
+          <ListItem key={branch.name}>{branch.name}</ListItem>
         ))}
-      </ul>
+      </List>
     </Drawer>
   );
 };
 
-const Name = styled.h2`
+const NameWrapper = styled.h2`
   margin-bottom: 40px;
   font-size: 22px;
   line-height: 20px;
+`;
+
+const Name = styled.span`
+  color: var(--green);
 `;
 
 const Title = styled.h3`
   margin-bottom: 20px;
   font-size: 24px;
   line-height: 20px;
+`;
+
+const List = styled.ul`
+  border: 1px solid var(--gray1);
+  border-radius: 10px;
+  padding: 10px;
+`;
+
+const ListItem = styled.li`
+  padding-left: 10px;
+  position: relative;
+
+  &:not(:last-of-type) {
+    margin-bottom: 10px;
+  }
+
+  &::before {
+    content: "";
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: var(--green);
+  }
 `;
