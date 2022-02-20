@@ -1,9 +1,7 @@
 import qs from "qs";
-import { HTTPMethod } from "shared/store/ApiStore/types";
+import { ApiStore, ApiResponse, HTTPMethod } from "shared/store/ApiStore";
 import { IOrganizationRepoItem, IUserRepoBranch, IUserRepoItem } from "types";
 
-import ApiStore from "../../shared/store/ApiStore";
-import { ApiResponse } from "./../../shared/store/ApiStore/types";
 import {
   CreateUserRepoParams,
   GetOrganizationReposListParams,

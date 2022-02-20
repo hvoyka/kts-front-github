@@ -1,1 +1,2 @@
-export { default } from "./GitHubStore";
+export { default as GitHubStore } from "./GitHubStore";
+export * from "./types";

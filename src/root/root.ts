@@ -1,6 +1,4 @@
-import { GetOrganizationReposListParams } from "store/GitHubStore/types";
-
-import GitHubStore from "../store/GitHubStore/GitHubStore";
+import { GitHubStore, GetOrganizationReposListParams } from "store/GitHubStore";
 
 const gitHubStore = new GitHubStore();
 
