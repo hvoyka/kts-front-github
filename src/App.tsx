@@ -2,8 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 
 import { Col, Row } from "antd";
 import { CreateRepo, RepoPanel } from "components";
-import GitHubStore from "store/GitHubStore";
-import { GetUserReposListParams } from "store/GitHubStore/types";
+import { GitHubStore, GetUserReposListParams } from "store/GitHubStore";
 import styled from "styled-components";
 import { IUserRepoItem } from "types";
 

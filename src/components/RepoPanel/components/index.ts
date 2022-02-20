@@ -2,4 +2,4 @@ export { SearchForm } from "./SearchForm";
 export { SearchButton } from "./SearchButton";
 export { RepoTile } from "./RepoTile";
 export { RepoList } from "./RepoList";
-export { AsidePanel } from "./AsidePanel";
+export { RepoBranchesDrawer } from "./AsidePanel";

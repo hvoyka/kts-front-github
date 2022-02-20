@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 
 import { Typography, Input, Button } from "antd";
-import GitHubStore from "store/GitHubStore";
-import { CreateUserRepoParams } from "store/GitHubStore/types";
+import { GitHubStore, CreateUserRepoParams } from "store/GitHubStore";
 import styled from "styled-components";
 const { Title } = Typography;
 

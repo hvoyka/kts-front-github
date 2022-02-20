@@ -1,1 +1,1 @@
-export { AsidePanel } from "./AsidePanel";
+export { RepoBranchesDrawer } from "./RepoBranchesDrawer";

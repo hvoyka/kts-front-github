@@ -1,6 +1,7 @@
 import React, { FC } from "react";
 
 import { Skeleton } from "antd";
+import { Avatar } from "components";
 import { StarIcon } from "components/icons";
 import dayjs from "dayjs";
 import styled from "styled-components";
@@ -16,6 +17,7 @@ export const RepoTile: FC<RepoTileProps> = ({ item, isLoading, onClick }) => {
   const { avatar_url, name, owner, html_url, stargazers_count, updated_at } =
     item || {};
   const updateDate = dayjs(updated_at).format("D MMM");
+  const repoNameFirstLetter = name[0].toUpperCase();
 
   const handleClickOnCard = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
@@ -43,13 +45,11 @@ export const RepoTile: FC<RepoTileProps> = ({ item, isLoading, onClick }) => {
         </>
       ) : (
         <>
-          <ImageWrapper>
-            {avatar_url ? (
-              <img src={avatar_url} alt="Repository logo" />
-            ) : (
-              <RepoEmptyAvatar>{owner?.login[0].toUpperCase()}</RepoEmptyAvatar>
-            )}
-          </ImageWrapper>
+          <Avatar
+            imageSrc={avatar_url}
+            alt="avatar"
+            letter={repoNameFirstLetter}
+          />
 
           <Content>
             <Name>{name}</Name>
@@ -84,29 +84,6 @@ const Root = styled.div`
   &:hover {
     box-shadow: 0px 2px 6px rgba(182, 182, 182, 0.25);
   }
-`;
-
-const ImageWrapper = styled.div`
-  flex-shrink: 0;
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
-  overflow: hidden;
-  margin-right: 12px;
-`;
-
-const RepoEmptyAvatar = styled.div`
-  background: var(--red1);
-  color: var(--white);
-  width: 100%;
-  height: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-
-  font-weight: bold;
-  font-size: 40px;
-  line-height: 47px;
 `;
 
 const Content = styled.div`

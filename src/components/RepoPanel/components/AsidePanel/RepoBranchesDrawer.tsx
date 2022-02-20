@@ -1,26 +1,26 @@
 import React, { FC, useEffect, useState } from "react";
 
 import { Drawer } from "antd";
-import GitHubStore from "store/GitHubStore/GitHubStore";
-import { GetRepoBranchesParams } from "store/GitHubStore/types";
+import { GitHubStore, GetRepoBranchesParams } from "store/GitHubStore";
 import styled from "styled-components";
 import { IUserRepoBranch } from "types";
-interface AsidePanelProps {
+interface RepoBranchesDrawerProps {
   title?: string;
-  repoName: string;
+  selectedRepo: { name: string };
   isVisible: boolean;
   onClose: () => void;
 }
 
 const gitHubStore = new GitHubStore();
 
-export const AsidePanel: FC<AsidePanelProps> = ({
+export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
   title,
-  repoName,
+  selectedRepo,
   isVisible,
   onClose,
 }) => {
   const [branches, setBranches] = useState<IUserRepoBranch[]>([]);
+  const repoName = selectedRepo.name;
 
   useEffect(() => {
     const repoParams: GetRepoBranchesParams = {

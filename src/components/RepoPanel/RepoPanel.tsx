@@ -3,7 +3,7 @@ import React, { FC, useCallback, useState } from "react";
 import styled from "styled-components";
 import { IUserRepoItem } from "types";
 
-import { AsidePanel, RepoList, SearchForm } from "./components";
+import { RepoBranchesDrawer, RepoList, SearchForm } from "./components";
 
 interface RepoPanelProps {
   isLoading?: boolean;
@@ -11,14 +11,14 @@ interface RepoPanelProps {
 }
 
 export const RepoPanel: FC<RepoPanelProps> = ({ items, isLoading }) => {
-  const [isAsidePanelVisible, setIsAsidePanelVisible] = useState(false);
-  const [processableRepo, setProcessableRepo] = useState("");
+  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  const [processableRepo, setProcessableRepo] = useState({ name: "" });
 
   const handleSearchSubmit = (searchValue: string) => {};
 
   const handleTileClick = useCallback((repoName: string) => {
-    setIsAsidePanelVisible(true);
-    setProcessableRepo(repoName);
+    setIsDrawerVisible(true);
+    setProcessableRepo({ name: repoName });
   }, []);
 
   return (
@@ -31,11 +31,11 @@ export const RepoPanel: FC<RepoPanelProps> = ({ items, isLoading }) => {
         onCardClick={handleTileClick}
       />
 
-      <AsidePanel
+      <RepoBranchesDrawer
         title="Repository branches"
-        repoName={processableRepo}
-        isVisible={isAsidePanelVisible}
-        onClose={() => setIsAsidePanelVisible(false)}
+        selectedRepo={processableRepo}
+        isVisible={isDrawerVisible}
+        onClose={() => setIsDrawerVisible(false)}
       />
     </Root>
   );
