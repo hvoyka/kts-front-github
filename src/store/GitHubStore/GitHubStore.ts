@@ -7,7 +7,7 @@ import { ApiResponse } from "./../../shared/store/ApiStore/types";
 import {
   CreateUserRepoParams,
   GetOrganizationReposListParams,
-  GetUserRepoBranchesParams,
+  GetRepoBranchesParams,
   GetUserReposListParams,
   IGitHubStore,
 } from "./types";
@@ -69,7 +69,7 @@ export default class GitHubStore implements IGitHubStore {
     };
   }
 
-  getUserRepoBranchesRequestParams(params: GetUserRepoBranchesParams) {
+  getRepoBranchesRequestParams(params: GetRepoBranchesParams) {
     return {
       method: HTTPMethod.GET,
       endpoint: `repos/${params.owner}/${params.repo}/branches`,
@@ -90,10 +90,10 @@ export default class GitHubStore implements IGitHubStore {
     return await this.apiStore.request(requestParams);
   }
 
-  async getUserRepoBranches(
-    params: GetUserRepoBranchesParams
+  async getRepoBranches(
+    params: GetRepoBranchesParams
   ): Promise<ApiResponse<IUserRepoBranch[]>> {
-    const requestParams = this.getUserRepoBranchesRequestParams(params);
+    const requestParams = this.getRepoBranchesRequestParams(params);
     return await this.apiStore.request(requestParams);
   }
 

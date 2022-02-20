@@ -2,7 +2,7 @@ import React, { FC, useEffect, useState } from "react";
 
 import { Drawer } from "antd";
 import GitHubStore from "store/GitHubStore/GitHubStore";
-import { GetUserRepoBranchesParams } from "store/GitHubStore/types";
+import { GetRepoBranchesParams } from "store/GitHubStore/types";
 import styled from "styled-components";
 import { IUserRepoBranch } from "types";
 interface AsidePanelProps {
@@ -23,13 +23,13 @@ export const AsidePanel: FC<AsidePanelProps> = ({
   const [branches, setBranches] = useState<IUserRepoBranch[]>([]);
 
   useEffect(() => {
-    const repoParams: GetUserRepoBranchesParams = {
+    const repoParams: GetRepoBranchesParams = {
       owner: "hvoyka",
       repo: repoName,
     };
 
     if (repoName) {
-      gitHubStore.getUserRepoBranches(repoParams).then((response) => {
+      gitHubStore.getRepoBranches(repoParams).then((response) => {
         if (response.success) setBranches(response.data);
       });
     }

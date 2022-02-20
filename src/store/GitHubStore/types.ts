@@ -19,7 +19,7 @@ export interface CreateUserRepoParams {
   description?: string;
 }
 
-export interface GetUserRepoBranchesParams {
+export interface GetRepoBranchesParams {
   owner: string;
   repo: string;
   per_page?: number;
@@ -43,8 +43,8 @@ export interface IGitHubStore {
     params: CreateUserRepoParams
   ): Promise<ApiResponse<IUserRepoItem>>;
 
-  getUserRepoBranches(
-    params: GetUserRepoBranchesParams
+  getRepoBranches(
+    params: GetRepoBranchesParams
   ): Promise<ApiResponse<IUserRepoBranch[]>>;
 
   getOrganizationReposList(

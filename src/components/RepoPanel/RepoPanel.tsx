@@ -1,11 +1,9 @@
-import { USER_EMPTY_REPO_MOCK } from "constants/mock";
-
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 
 import styled from "styled-components";
 import { IUserRepoItem } from "types";
 
-import { AsidePanel, RepoTile, SearchForm } from "./components";
+import { AsidePanel, RepoList, SearchForm } from "./components";
 
 interface RepoPanelProps {
   isLoading?: boolean;
@@ -16,55 +14,28 @@ export const RepoPanel: FC<RepoPanelProps> = ({ items, isLoading }) => {
   const [isAsidePanelVisible, setIsAsidePanelVisible] = useState(false);
   const [processableRepo, setProcessableRepo] = useState("");
 
-  const handleAsidePanelClose = () => {
-    setIsAsidePanelVisible(false);
-  };
-
   const handleSearchSubmit = (searchValue: string) => {};
 
-  const handleTileClick = (repoName: string) => {
+  const handleTileClick = useCallback((repoName: string) => {
     setIsAsidePanelVisible(true);
     setProcessableRepo(repoName);
-  };
+  }, []);
 
   return (
     <Root>
       <StyledSearchForm onSubmit={handleSearchSubmit} isLoading={isLoading} />
 
-      {isLoading ? (
-        <List>
-          {Array.from(Array(5)).map((_, index) => {
-            return (
-              <li key={index}>
-                <RepoTile item={USER_EMPTY_REPO_MOCK} isLoading={true} />
-              </li>
-            );
-          })}
-        </List>
-      ) : (
-        <>
-          <List>
-            {items.map((item) => {
-              return (
-                <li key={item.id}>
-                  <RepoTile
-                    item={item}
-                    onClick={() => {
-                      handleTileClick(item.name);
-                    }}
-                  />
-                </li>
-              );
-            })}
-          </List>
-        </>
-      )}
+      <RepoList
+        items={items}
+        isLoading={isLoading}
+        onCardClick={handleTileClick}
+      />
 
       <AsidePanel
         title="Repository branches"
         repoName={processableRepo}
         isVisible={isAsidePanelVisible}
-        onClose={handleAsidePanelClose}
+        onClose={() => setIsAsidePanelVisible(false)}
       />
     </Root>
   );
@@ -79,11 +50,4 @@ const Root = styled.div`
 
 const StyledSearchForm = styled(SearchForm)`
   margin-bottom: 20px;
-`;
-
-const List = styled.ul`
-  display: grid;
-  grid-template-columns: 1fr;
-  grid-template-rows: auto;
-  gap: 15px;
 `;
