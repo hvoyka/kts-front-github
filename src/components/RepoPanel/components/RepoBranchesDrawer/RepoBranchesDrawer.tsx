@@ -20,6 +20,7 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
   onClose,
 }) => {
   const [branches, setBranches] = useState<IUserRepoBranch[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const repoName = selectedRepo.name;
 
   useEffect(() => {
@@ -29,9 +30,17 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
     };
 
     if (repoName) {
-      gitHubStore.getRepoBranches(repoParams).then((response) => {
-        if (response.success) setBranches(response.data);
-      });
+      setIsLoading(true);
+      setBranches([]);
+
+      gitHubStore
+        .getRepoBranches(repoParams)
+        .then((response) => {
+          if (response.success) setBranches(response.data);
+        })
+        .finally(() => {
+          setIsLoading(false);
+        });
     }
   }, [repoName]);
 
@@ -43,7 +52,7 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
       visible={isVisible}
     >
       <NameWrapper>
-        Repository: <Name>{repoName}</Name>
+        Repository: <Name>{isLoading ? "Loading..." : repoName}</Name>
       </NameWrapper>
       <Title>Branches:</Title>
       <List>

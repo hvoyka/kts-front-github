@@ -5,7 +5,7 @@ import styled from "styled-components";
 interface AvatarProps {
   imageSrc: string | null;
   alt: string;
-  letter: string;
+  letter?: string;
 }
 
 export const Avatar: FC<AvatarProps> = ({ imageSrc, alt, letter }) => {

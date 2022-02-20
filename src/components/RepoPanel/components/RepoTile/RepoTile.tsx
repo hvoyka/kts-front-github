@@ -17,7 +17,7 @@ export const RepoTile: FC<RepoTileProps> = ({ item, isLoading, onClick }) => {
   const { avatar_url, name, owner, html_url, stargazers_count, updated_at } =
     item || {};
   const updateDate = dayjs(updated_at).format("D MMM");
-  const repoNameFirstLetter = name[0].toUpperCase();
+  const repoNameFirstLetter = name[0]?.toUpperCase();
 
   const handleClickOnCard = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
