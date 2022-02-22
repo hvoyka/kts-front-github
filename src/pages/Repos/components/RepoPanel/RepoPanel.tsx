@@ -1,9 +1,11 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback } from "react";
 
+import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
 import { IUserRepoItem } from "types";
 
-import { RepoBranchesDrawer, RepoList, SearchForm } from "./components";
+import { RepoBranchesDrawer } from "../RepoBranchesDrawer";
+import { RepoList, SearchForm } from "./components";
 
 interface RepoPanelProps {
   isLoading?: boolean;
@@ -11,14 +13,13 @@ interface RepoPanelProps {
 }
 
 export const RepoPanel: FC<RepoPanelProps> = ({ items, isLoading }) => {
-  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-  const [processableRepo, setProcessableRepo] = useState({ name: "" });
+  let navigate = useNavigate();
+  let { repoName } = useParams();
 
   const handleSearchSubmit = (searchValue: string) => {};
 
   const handleTileClick = useCallback((repoName: string) => {
-    setIsDrawerVisible(true);
-    setProcessableRepo({ name: repoName });
+    navigate(`/repos/${repoName}`);
   }, []);
 
   return (
@@ -31,12 +32,14 @@ export const RepoPanel: FC<RepoPanelProps> = ({ items, isLoading }) => {
         onCardClick={handleTileClick}
       />
 
-      <RepoBranchesDrawer
-        title="Repository branches"
-        selectedRepo={processableRepo}
-        isVisible={isDrawerVisible}
-        onClose={() => setIsDrawerVisible(false)}
-      />
+      {repoName && (
+        <RepoBranchesDrawer
+          title="Repository branches"
+          selectedRepo={repoName}
+          isVisible={!!repoName}
+          onClose={() => navigate(`/repos`)}
+        />
+      )}
     </Root>
   );
 };

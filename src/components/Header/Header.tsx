@@ -1,10 +1,10 @@
-import React from "react";
+import React, { FC } from "react";
 
 import { Menu } from "antd";
 import { Link } from "react-router-dom";
 import { ROUTES } from "routes/ROUTES";
 import styled from "styled-components";
-export const Header = () => {
+export const Header: FC = () => {
   return (
     <Root>
       <Menu mode="horizontal" selectable={false}>

@@ -8,7 +8,9 @@ import { ROUTES } from "./ROUTES";
 export const Router = () => {
   return (
     <Routes>
-      <Route path={ROUTES.REPOS} element={<Repos />} />
+      <Route path={ROUTES.REPOS} element={<Repos />}>
+        <Route path=":repoName" element={<Repos />} />
+      </Route>
       <Route path={ROUTES.CREATE_REPO} element={<CreateRepo />} />
       <Route path="*" element={<Navigate to={ROUTES.REPOS} />} />
     </Routes>

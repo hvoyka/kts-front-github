@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { IUserRepoBranch } from "types";
 interface RepoBranchesDrawerProps {
   title?: string;
-  selectedRepo: { name: string };
+  selectedRepo: string;
   isVisible: boolean;
   onClose: () => void;
 }
@@ -21,15 +21,14 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
 }) => {
   const [branches, setBranches] = useState<IUserRepoBranch[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const repoName = selectedRepo.name;
 
   useEffect(() => {
     const repoParams: GetRepoBranchesParams = {
       owner: "hvoyka",
-      repo: repoName,
+      repo: selectedRepo,
     };
 
-    if (repoName) {
+    if (selectedRepo) {
       setIsLoading(true);
       setBranches([]);
 
@@ -42,7 +41,7 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
           setIsLoading(false);
         });
     }
-  }, [repoName]);
+  }, [selectedRepo]);
 
   return (
     <Drawer
@@ -52,7 +51,7 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
       visible={isVisible}
     >
       <NameWrapper>
-        Repository: <Name>{isLoading ? "Loading..." : repoName}</Name>
+        Repository: <Name>{isLoading ? "Loading..." : selectedRepo}</Name>
       </NameWrapper>
       <Title>Branches:</Title>
       <List>

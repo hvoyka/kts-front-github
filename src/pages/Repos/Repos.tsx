@@ -1,11 +1,12 @@
 import React, { FC, useEffect, useState } from "react";
 
 import { Col, Row } from "antd";
-import { Header, RepoPanel } from "components";
 import { MainLayout } from "layouts";
 import { GitHubStore, GetUserReposListParams } from "store/GitHubStore";
 import styled from "styled-components";
 import { IUserRepoItem } from "types";
+
+import { RepoPanel } from "./components";
 
 const gitHubStore = new GitHubStore();
 
@@ -40,9 +41,3 @@ export const Repos: FC = () => {
     </MainLayout>
   );
 };
-
-const Root = styled.main`
-  max-width: 1440px;
-  width: 100%;
-  margin: 0 auto;
-`;

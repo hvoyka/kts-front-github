@@ -1,9 +1,9 @@
 import React, { FC } from "react";
 
 import { Col, Row } from "antd";
-import { CreateRepoForm, Header } from "components";
 import { MainLayout } from "layouts";
-import styled from "styled-components";
+
+import { CreateRepoForm } from "./components";
 
 export const CreateRepo: FC = () => {
   return (
