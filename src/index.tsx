@@ -5,12 +5,13 @@ import "assets/styles/fonts.css";
 import "normalize.css";
 import "assets/styles/reset.css";
 import "assets/styles/global.css";
+import { BrowserRouter } from "react-router-dom";
 
 import App from "./App";
 
 ReactDOM.render(
-  <React.StrictMode>
+  <BrowserRouter>
     <App />
-  </React.StrictMode>,
+  </BrowserRouter>,
   document.getElementById("root")
 );
