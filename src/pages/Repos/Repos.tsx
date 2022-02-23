@@ -4,6 +4,7 @@ import { Col, Row } from "antd";
 import { useReposContext } from "context";
 import { MainLayout } from "layouts";
 import InfiniteScroll from "react-infinite-scroll-component";
+import styled from "styled-components";
 import { IUserRepoItem } from "types";
 
 import { RepoPanel } from "./components";
@@ -11,8 +12,9 @@ import { RepoPanel } from "./components";
 export const Repos: FC = () => {
   const PER_PAGE = 6;
   const { items, isLoading, loadRepos } = useReposContext();
-  const [loadedItems, setLoadedItems] = useState<IUserRepoItem[]>(items);
+  const [loadedItems, setLoadedItems] = useState<IUserRepoItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
     loadRepos({
@@ -22,7 +24,12 @@ export const Repos: FC = () => {
   }, []);
 
   useEffect(() => {
-    setLoadedItems((prevItems) => prevItems.concat(items));
+    if (items.length) {
+      setHasMore(true);
+      setLoadedItems((prevItems) => prevItems.concat(items));
+    } else {
+      setHasMore(false);
+    }
   }, [items]);
 
   const fetchMoreData = () => {
@@ -40,18 +47,27 @@ export const Repos: FC = () => {
           <InfiniteScroll
             dataLength={loadedItems?.length}
             next={fetchMoreData}
-            hasMore={true}
-            loader={<h4>Loading...</h4>}
-            endMessage={
-              <p style={{ textAlign: "center" }}>
-                <b>Yay! You have seen it all</b>
-              </p>
-            }
+            hasMore={hasMore}
+            loader={<Loader>Loading...</Loader>}
+            endMessage={<EndMessage>Yay! You have seen it all</EndMessage>}
           >
-            <RepoPanel items={loadedItems} isLoading={false} />
+            <RepoPanel items={loadedItems} isLoading={isLoading} />
           </InfiniteScroll>
         </Col>
       </Row>
     </MainLayout>
   );
 };
+
+const Loader = styled.p`
+  margin: 20px;
+  font-size: 20px;
+  text-align: center;
+`;
+
+const EndMessage = styled.p`
+  text-align: center;
+  margin: 20px;
+  font-size: 20px;
+  font-weight: bold;
+`;

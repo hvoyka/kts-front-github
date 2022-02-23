@@ -17,7 +17,7 @@ const ReposContext = createContext(initialContexValues);
 
 export const ReposProvider: FC = ({ children }) => {
   const [items, setItems] = useState<IUserRepoItem[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
 
   const userParams: GetUserReposListParams = {
     username: "hvoyka",
@@ -25,7 +25,6 @@ export const ReposProvider: FC = ({ children }) => {
   };
 
   const loadRepos = (customParams?: Partial<GetUserReposListParams>) => {
-    setIsLoading(true);
     gitHubStore
       .getUserReposList({ ...userParams, ...customParams })
       .then((response) => {
