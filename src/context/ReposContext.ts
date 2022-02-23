@@ -2,8 +2,10 @@ import { createContext } from "react";
 
 import { IReposContext } from "./types";
 
-export const ReposContext = createContext<IReposContext>({
+const initialContexValues: IReposContext = {
   items: [],
   isLoading: false,
   loadRepos: () => {},
-});
+};
+
+export const ReposContext = createContext(initialContexValues);

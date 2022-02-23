@@ -1,13 +1,13 @@
-import React, { FC, useContext, useEffect } from "react";
+import React, { FC, useEffect } from "react";
 
 import { Col, Row } from "antd";
-import { ReposContext } from "context";
+import { useReposContext } from "context";
 import { MainLayout } from "layouts";
 
 import { RepoPanel } from "./components";
 
 export const Repos: FC = () => {
-  const { items, isLoading, loadRepos } = useContext(ReposContext);
+  const { items, isLoading, loadRepos } = useReposContext();
 
   useEffect(() => {
     loadRepos();
