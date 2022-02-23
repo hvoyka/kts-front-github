@@ -1,3 +1,2 @@
-export { ReposContext } from "./ReposContext";
+export { ReposProvider, useReposContext } from "./repos.context";
 export * from "./types";
-export * from "./hooks";
