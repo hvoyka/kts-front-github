@@ -4,6 +4,7 @@ import { GetUserReposListParams, GitHubStore } from "store/GitHubStore";
 import { IUserRepoItem } from "types";
 
 import { IReposContext } from "./types";
+
 const gitHubStore = GitHubStore.getInstance();
 
 const initialContexValues: IReposContext = {
@@ -23,10 +24,10 @@ export const ReposProvider: FC = ({ children }) => {
     direction: "desc",
   };
 
-  const loadRepos = () => {
+  const loadRepos = (customParams?: Partial<GetUserReposListParams>) => {
     setIsLoading(true);
     gitHubStore
-      .getUserReposList(userParams)
+      .getUserReposList({ ...userParams, ...customParams })
       .then((response) => {
         if (response.success) setItems(response.data);
       })
