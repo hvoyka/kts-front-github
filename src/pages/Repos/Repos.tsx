@@ -1,41 +1,23 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useContext, useEffect } from "react";
 
 import { Col, Row } from "antd";
+import { ReposContext } from "context";
 import { MainLayout } from "layouts";
-import { GitHubStore, GetUserReposListParams } from "store/GitHubStore";
-import styled from "styled-components";
-import { IUserRepoItem } from "types";
 
 import { RepoPanel } from "./components";
 
-const gitHubStore = new GitHubStore();
-
 export const Repos: FC = () => {
-  const [items, setItems] = useState<IUserRepoItem[]>([]);
-  const [isRequestLoading, setIsRequestLoading] = useState(false);
-
-  const userParams: GetUserReposListParams = {
-    username: "hvoyka",
-    direction: "desc",
-  };
+  const { items, isLoading, loadRepos } = useContext(ReposContext);
 
   useEffect(() => {
-    setIsRequestLoading(true);
-    gitHubStore
-      .getUserReposList(userParams)
-      .then((response) => {
-        if (response.success) setItems(response.data);
-      })
-      .finally(() => {
-        setIsRequestLoading(false);
-      });
+    loadRepos();
   }, []);
 
   return (
     <MainLayout>
       <Row>
         <Col>
-          <RepoPanel items={items} isLoading={isRequestLoading} />
+          <RepoPanel items={items} isLoading={isLoading} />
         </Col>
       </Row>
     </MainLayout>
