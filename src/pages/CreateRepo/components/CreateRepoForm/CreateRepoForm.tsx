@@ -1,11 +1,11 @@
-import React, { FormEvent, FormEventHandler, useState } from "react";
+import React, { FormEvent, useState } from "react";
 
 import { Typography, Input, Button } from "antd";
 import { GitHubStore, CreateUserRepoParams } from "store/GitHubStore";
 import styled from "styled-components";
 const { Title } = Typography;
 
-const gitHubStore = new GitHubStore();
+const gitHubStore = GitHubStore.getInstance();
 
 export const CreateRepoForm = () => {
   const [repoName, setRepoName] = useState("");
@@ -17,11 +17,10 @@ export const CreateRepoForm = () => {
 
   const handleCreateRepository = (event: FormEvent) => {
     event.preventDefault();
-    console.log("submit");
 
-    /*  gitHubStore.createUserRepo(repoParams).then((result) => {
+    gitHubStore.createUserRepo(repoParams).then((result) => {
       setRepoName("");
-    }); */
+    });
   };
 
   return (

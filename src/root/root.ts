@@ -1,6 +1,6 @@
 import { GitHubStore, GetOrganizationReposListParams } from "store/GitHubStore";
 
-const gitHubStore = new GitHubStore();
+const gitHubStore = GitHubStore.getInstance();
 
 const orgParams: GetOrganizationReposListParams = {
   org: "ktsstudio",

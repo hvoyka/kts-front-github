@@ -4,7 +4,7 @@ import { GetUserReposListParams, GitHubStore } from "store/GitHubStore";
 import { IUserRepoItem } from "types";
 
 import { IReposContext } from "./types";
-const gitHubStore = new GitHubStore();
+const gitHubStore = GitHubStore.getInstance();
 
 const initialContexValues: IReposContext = {
   items: [],

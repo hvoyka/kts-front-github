@@ -15,6 +15,16 @@ const BASE_URL = "https://api.github.com";
 const GITHUB_ACCESS_TOKEN = process.env.REACT_APP_GITHUB_ACCESS_TOKEN || "";
 
 export default class GitHubStore implements IGitHubStore {
+  private static _instance: GitHubStore;
+
+  public static getInstance(): GitHubStore {
+    if (!GitHubStore._instance) {
+      GitHubStore._instance = new GitHubStore();
+    }
+
+    return GitHubStore._instance;
+  }
+
   private readonly apiStore = new ApiStore(BASE_URL);
   getUserReposRequestParams(params: GetUserReposListParams) {
     return {

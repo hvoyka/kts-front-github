@@ -11,7 +11,7 @@ interface RepoBranchesDrawerProps {
   onClose: () => void;
 }
 
-const gitHubStore = new GitHubStore();
+const gitHubStore = GitHubStore.getInstance();
 
 export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
   title,
