@@ -4,8 +4,9 @@ export interface IUserRepoItem {
   html_url: string;
   stargazers_count: number;
   updated_at: string;
-  avatar_url: string | null;
+
   owner: {
+    avatar_url: string | null;
     login: string;
   };
 }

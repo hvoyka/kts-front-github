@@ -9,13 +9,14 @@ interface InputProps {
   name: string;
   value: string;
   isLoading?: boolean;
-  onChange: (event: ChangeEvent<HTMLInputElement>) => void;
+  onChange: (value: string) => void;
 }
 
 export const Input: FC<InputProps> = ({
   placeholder,
   id,
   name,
+  onChange,
   isLoading,
   ...props
 }) => {
@@ -33,7 +34,15 @@ export const Input: FC<InputProps> = ({
           size="large"
         />
       ) : (
-        <StyledInput name={name} id={id} placeholder={placeholder} {...props} />
+        <StyledInput
+          name={name}
+          id={id}
+          placeholder={placeholder}
+          {...props}
+          onChange={(event: ChangeEvent<HTMLInputElement>) => {
+            onChange(event.target.value);
+          }}
+        />
       )}
     </>
   );

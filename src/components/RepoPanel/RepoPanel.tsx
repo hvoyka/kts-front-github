@@ -11,32 +11,27 @@ interface RepoPanelProps {
 }
 
 export const RepoPanel: FC<RepoPanelProps> = ({ items, isLoading }) => {
-  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
-  const [processableRepo, setProcessableRepo] = useState({ name: "" });
+  const [processableRepo, setProcessableRepo] = useState<IUserRepoItem | null>(
+    null
+  );
 
   const handleSearchSubmit = (searchValue: string) => {};
 
-  const handleTileClick = useCallback((repoName: string) => {
-    setIsDrawerVisible(true);
-    setProcessableRepo({ name: repoName });
-  }, []);
+  const handleTileClick = useCallback(
+    (id: number) => {
+      const currentRepo = items.find((item) => item.id === id);
+      setProcessableRepo(currentRepo || null);
+    },
+    [items]
+  );
 
   return (
     <Root>
       <StyledSearchForm onSubmit={handleSearchSubmit} isLoading={isLoading} />
 
-      <RepoList
-        items={items}
-        isLoading={isLoading}
-        onCardClick={handleTileClick}
-      />
+      <RepoList items={items} isLoading={isLoading} onClick={handleTileClick} />
 
-      <RepoBranchesDrawer
-        title="Repository branches"
-        selectedRepo={processableRepo}
-        isVisible={isDrawerVisible}
-        onClose={() => setIsDrawerVisible(false)}
-      />
+      <RepoBranchesDrawer selectedRepo={processableRepo} />
     </Root>
   );
 };
