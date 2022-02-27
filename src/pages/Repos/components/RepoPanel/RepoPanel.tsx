@@ -1,6 +1,6 @@
-import React, { FC, useCallback, useState } from "react";
+import React, { FC, useCallback } from "react";
 
-import { useNavigate, useParams } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import { IUserRepoItem } from "types";
 
@@ -18,17 +18,12 @@ export const RepoPanel: FC<RepoPanelProps> = ({
   isLoading,
   onSearchSubmit,
 }) => {
-  const [processableRepo, setProcessableRepo] = useState<IUserRepoItem | null>(
-    null
-  );
   let navigate = useNavigate();
-  let { repoName } = useParams();
 
   const handleTileClick = useCallback(
     (id: number) => {
       const currentRepo = items.find((item) => item.id === id);
-      setProcessableRepo(currentRepo || null);
-      navigate(`/repos/${repoName}`);
+      navigate(`/repos/${currentRepo?.name}`);
     },
     [items]
   );
@@ -36,10 +31,8 @@ export const RepoPanel: FC<RepoPanelProps> = ({
   return (
     <Root>
       <StyledSearchForm onSearchSubmit={onSearchSubmit} isLoading={isLoading} />
-
       <RepoList items={items} isLoading={isLoading} onClick={handleTileClick} />
-
-      <RepoBranchesDrawer selectedRepo={processableRepo} />
+      <RepoBranchesDrawer />
     </Root>
   );
 };

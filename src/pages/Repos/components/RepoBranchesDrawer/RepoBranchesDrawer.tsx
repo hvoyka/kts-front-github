@@ -1,27 +1,31 @@
 import React, { FC, useEffect, useState } from "react";
 
 import { Drawer } from "antd";
+import { useNavigate, useParams } from "react-router-dom";
+import { ROUTES } from "routes/ROUTES";
 import { GitHubStore, GetRepoBranchesParams } from "store/GitHubStore";
 import styled from "styled-components";
-import { IUserRepoBranch, IUserRepoItem } from "types";
-interface RepoBranchesDrawerProps {
-  selectedRepo: IUserRepoItem | null;
-}
+import { IUserRepoBranch } from "types";
 
 const gitHubStore = GitHubStore.getInstance();
 
-export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
-  selectedRepo,
-}) => {
+export const RepoBranchesDrawer: FC = () => {
   const [branches, setBranches] = useState<IUserRepoBranch[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+  let { repoName } = useParams();
+  let navigate = useNavigate();
+
+  const handleDrawerClose = () => {
+    setIsDrawerVisible(false);
+    navigate(ROUTES.REPOS);
+  };
 
   useEffect(() => {
-    if (selectedRepo) {
+    if (repoName) {
       const repoParams: GetRepoBranchesParams = {
-        owner: selectedRepo?.owner.login,
-        repo: selectedRepo?.name,
+        owner: "hvoyka",
+        repo: repoName,
       };
 
       setBranches([]);
@@ -32,21 +36,24 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
         const response = await gitHubStore.getRepoBranches(repoParams);
         if (response.success) {
           setBranches(response.data);
+        } else {
+          setIsDrawerVisible(false);
+          navigate(ROUTES.REPOS);
         }
         setIsLoading(false);
       })();
     }
-  }, [selectedRepo]);
+  }, [repoName]);
 
   return (
     <Drawer
       title="Repository branches"
       placement="right"
-      onClose={() => setIsDrawerVisible(false)}
+      onClose={handleDrawerClose}
       visible={isDrawerVisible}
     >
       <NameWrapper>
-        Repository: <Name>{isLoading ? "Loading..." : selectedRepo?.name}</Name>
+        Repository: <Name>{isLoading ? "Loading..." : repoName}</Name>
       </NameWrapper>
       <Title>Branches:</Title>
       <List>
