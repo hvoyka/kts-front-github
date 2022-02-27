@@ -1,22 +1,29 @@
-import React, { FC } from "react";
+import React from "react";
 
 import styled from "styled-components";
 
-interface AvatarProps {
-  imageSrc: string | null;
+type AvatarWithSrc = {
+  src: string;
   alt: string;
-  letter?: string;
-}
+};
 
-export const Avatar: FC<AvatarProps> = ({ imageSrc, alt, letter }) => {
+type AvatarWithoutSrc = { src: null; letter: string; alt: string };
+
+type AvatarProps = AvatarWithSrc | AvatarWithoutSrc;
+
+export const Avatar = (props: AvatarProps) => {
   return (
-    <Root>
-      {imageSrc ? (
-        <img src={imageSrc} alt={alt} />
+    <>
+      {props.src === null ? (
+        <Root>
+          <EmptyAvatar>{props.letter}</EmptyAvatar>
+        </Root>
       ) : (
-        <EmptyAvatar>{letter}</EmptyAvatar>
+        <Root>
+          <img src={props.src} alt={props.alt} />
+        </Root>
       )}
-    </Root>
+    </>
   );
 };
 

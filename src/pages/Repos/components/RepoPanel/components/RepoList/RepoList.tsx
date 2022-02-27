@@ -10,10 +10,10 @@ import { RepoTile } from "../RepoTile";
 interface RepoListProps {
   isLoading?: boolean;
   items: IUserRepoItem[];
-  onCardClick: (repoName: string) => void;
+  onClick: (id: number) => void;
 }
 
-const RepoList: FC<RepoListProps> = ({ isLoading, items, onCardClick }) => {
+const RepoList: FC<RepoListProps> = ({ isLoading, items, onClick }) => {
   return (
     <>
       {isLoading ? (
@@ -21,7 +21,11 @@ const RepoList: FC<RepoListProps> = ({ isLoading, items, onCardClick }) => {
           {Array.from(Array(5)).map((_, index) => {
             return (
               <li key={index}>
-                <RepoTile item={USER_EMPTY_REPO_MOCK} isLoading={true} />
+                <RepoTile
+                  item={USER_EMPTY_REPO_MOCK}
+                  isLoading={true}
+                  onClick={() => {}}
+                />
               </li>
             );
           })}
@@ -32,10 +36,7 @@ const RepoList: FC<RepoListProps> = ({ isLoading, items, onCardClick }) => {
             {items.map((item) => {
               return (
                 <li key={item.id}>
-                  <RepoTile
-                    item={item}
-                    onClick={() => onCardClick(item.name)}
-                  />
+                  <RepoTile item={item} onClick={onClick} />
                 </li>
               );
             })}

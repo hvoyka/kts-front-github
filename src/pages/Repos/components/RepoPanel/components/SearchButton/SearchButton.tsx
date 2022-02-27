@@ -7,7 +7,7 @@ import styled from "styled-components";
 interface SearchButtonProps {
   isLoading?: boolean;
   isDisabled?: boolean;
-  onClick?: () => void;
+  onClick: () => void;
 }
 
 export const SearchButton: FC<SearchButtonProps> = ({

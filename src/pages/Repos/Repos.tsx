@@ -16,6 +16,8 @@ export const Repos: FC = () => {
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
 
+  const onSearchSubmit = (searchValue: string) => {};
+
   useEffect(() => {
     loadRepos({
       per_page: PER_PAGE,
@@ -51,7 +53,11 @@ export const Repos: FC = () => {
             loader={<Loader>Loading...</Loader>}
             endMessage={<EndMessage>Yay! You have seen it all</EndMessage>}
           >
-            <RepoPanel items={loadedItems} isLoading={isLoading} />
+            <RepoPanel
+              items={loadedItems}
+              isLoading={isLoading}
+              onSearchSubmit={onSearchSubmit}
+            />
           </InfiniteScroll>
         </Col>
       </Row>

@@ -10,20 +10,21 @@ import { IUserRepoItem } from "types";
 type RepoTileProps = {
   item: IUserRepoItem;
   isLoading?: boolean;
-  onClick?: () => void;
+  onClick: (id: number) => void;
 };
 
 export const RepoTile: FC<RepoTileProps> = ({ item, isLoading, onClick }) => {
-  const { avatar_url, name, owner, html_url, stargazers_count, updated_at } =
+  const { id, name, owner, html_url, stargazers_count, updated_at } =
     item || {};
+
   const updateDate = dayjs(updated_at).format("D MMM");
   const repoNameFirstLetter = name[0]?.toUpperCase();
 
   const handleClickOnCard = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    if (event.target instanceof HTMLDivElement) {
-      onClick?.();
+    if (id && event.target instanceof HTMLDivElement) {
+      onClick(id);
     }
   };
 
@@ -46,7 +47,7 @@ export const RepoTile: FC<RepoTileProps> = ({ item, isLoading, onClick }) => {
       ) : (
         <>
           <Avatar
-            imageSrc={avatar_url}
+            src={owner.avatar_url}
             alt="avatar"
             letter={repoNameFirstLetter}
           />

@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react";
+import React, { FC, useCallback, useState } from "react";
 
 import { useNavigate, useParams } from "react-router-dom";
 import styled from "styled-components";
@@ -10,36 +10,36 @@ import { RepoList, SearchForm } from "./components";
 interface RepoPanelProps {
   isLoading?: boolean;
   items: IUserRepoItem[];
+  onSearchSubmit: (searchValue: string) => void;
 }
 
-export const RepoPanel: FC<RepoPanelProps> = ({ items, isLoading }) => {
+export const RepoPanel: FC<RepoPanelProps> = ({
+  items,
+  isLoading,
+  onSearchSubmit,
+}) => {
+  const [processableRepo, setProcessableRepo] = useState<IUserRepoItem | null>(
+    null
+  );
   let navigate = useNavigate();
   let { repoName } = useParams();
 
-  const handleSearchSubmit = (searchValue: string) => {};
-
-  const handleTileClick = useCallback((repoName: string) => {
-    navigate(`/repos/${repoName}`);
-  }, []);
+  const handleTileClick = useCallback(
+    (id: number) => {
+      const currentRepo = items.find((item) => item.id === id);
+      setProcessableRepo(currentRepo || null);
+      navigate(`/repos/${repoName}`);
+    },
+    [items]
+  );
 
   return (
     <Root>
-      <StyledSearchForm onSubmit={handleSearchSubmit} isLoading={isLoading} />
+      <StyledSearchForm onSearchSubmit={onSearchSubmit} isLoading={isLoading} />
 
-      <RepoList
-        items={items}
-        isLoading={isLoading}
-        onCardClick={handleTileClick}
-      />
+      <RepoList items={items} isLoading={isLoading} onClick={handleTileClick} />
 
-      {repoName && (
-        <RepoBranchesDrawer
-          title="Repository branches"
-          selectedRepo={repoName}
-          isVisible={!!repoName}
-          onClose={() => navigate(`/repos`)}
-        />
-      )}
+      <RepoBranchesDrawer selectedRepo={processableRepo} />
     </Root>
   );
 };

@@ -24,15 +24,10 @@ export const ReposProvider: FC = ({ children }) => {
     direction: "desc",
   };
 
-  const loadRepos = (customParams?: Partial<GetUserReposListParams>) => {
-    gitHubStore
-      .getUserReposList({ ...userParams, ...customParams })
-      .then((response) => {
-        if (response.success) setItems(response.data);
-      })
-      .finally(() => {
-        setIsLoading(false);
-      });
+  const loadRepos = async (customParams?: Partial<GetUserReposListParams>) => {
+    const response = await gitHubStore.getUserReposList(userParams);
+    if (response.success) setItems(response.data);
+    setIsLoading(false);
   };
 
   return (
