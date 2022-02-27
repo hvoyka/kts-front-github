@@ -25,7 +25,10 @@ export const ReposProvider: FC = ({ children }) => {
   };
 
   const loadRepos = async (customParams?: Partial<GetUserReposListParams>) => {
-    const response = await gitHubStore.getUserReposList(userParams);
+    const response = await gitHubStore.getUserReposList({
+      ...userParams,
+      ...customParams,
+    });
     if (response.success) setItems(response.data);
     setIsLoading(false);
   };
