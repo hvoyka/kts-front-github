@@ -1,4 +1,4 @@
-@import '~antd/dist/antd.css';
+@import "~antd/dist/antd.css";
 
 :root {
   --black: #000;
@@ -11,25 +11,16 @@
   --gray3: #f9f9f9;
 
   --blue1: #208fbf;
+  --green: #6dd228;
 }
 
 body {
   background-color: var(--white);
   color: var(--black);
-  font-family: 'Roboto', sans-serif;
+  font-family: "Roboto", sans-serif;
   font-style: normal;
   font-weight: 400;
   font-size: 16px;
   line-height: 1.15;
   margin: 0;
-}
-
-.container {
-  max-width: 1440px;
-  width: 100%;
-  margin: 0 auto;
-}
-
-.flex {
-  display: flex;
 }

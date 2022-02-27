@@ -1,39 +1,52 @@
-import {Col, Row} from 'antd';
-import {CreateRepo, RepoPanel} from 'components';
-import {repoMockItems} from 'constants/mockItemsData';
+import React, { FC, useEffect, useState } from "react";
 
-import React, {FC, useEffect, useState} from 'react';
-import GitHubStore from 'store/GitHubStore';
-import {GetUserReposListParams} from 'store/GitHubStore/types';
+import { Col, Row } from "antd";
+import { RepoPanel } from "components";
+import { GitHubStore, GetUserReposListParams } from "store/GitHubStore";
+import styled from "styled-components";
+import { IUserRepoItem } from "types";
 
 const gitHubStore = new GitHubStore();
+const userParams: GetUserReposListParams = {
+  username: "hvoyka",
+  direction: "desc",
+};
 
 const App: FC = () => {
-  const [items, setItems] = useState(repoMockItems);
+  const [items, setItems] = useState<IUserRepoItem[]>([]);
+  const [isRequestLoading, setIsRequestLoading] = useState(false);
 
-  const userParams: GetUserReposListParams = {
-    username: 'hvoyka',
-    direction: 'desc',
-  };
+  const handleSearchSubmit = (searchValue: string) => {};
 
   useEffect(() => {
-    gitHubStore.getUserReposList(userParams).then((response) => {
+    setIsRequestLoading(true);
+
+    (async () => {
+      const response = await gitHubStore.getUserReposList(userParams);
       if (response.success) setItems(response.data);
-    });
+      setIsRequestLoading(false);
+    })();
   }, []);
 
   return (
-    <main className="container">
+    <Root>
       <Row>
         <Col>
-          <RepoPanel items={items} />
-        </Col>
-        <Col>
-          <CreateRepo />
+          <RepoPanel
+            items={items}
+            isLoading={isRequestLoading}
+            onSearchSubmit={handleSearchSubmit}
+          />
         </Col>
       </Row>
-    </main>
+    </Root>
   );
 };
+
+const Root = styled.main`
+  max-width: 1440px;
+  width: 100%;
+  margin: 0 auto;
+`;
 
 export default App;

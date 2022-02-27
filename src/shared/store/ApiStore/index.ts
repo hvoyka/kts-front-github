@@ -1,1 +1,2 @@
-export {default} from './ApiStore';
+export { default as ApiStore } from "./ApiStore";
+export * from "./types";

@@ -1,14 +1,14 @@
-import React, {useState} from 'react';
-import {Typography, Input, Button} from 'antd';
-import styled from 'styled-components';
-import GitHubStore from 'store/GitHubStore';
-import {CreateUserRepoParams} from 'store/GitHubStore/types';
-const {Title} = Typography;
+import React, { useState } from "react";
+
+import { Typography, Input, Button } from "antd";
+import { GitHubStore, CreateUserRepoParams } from "store/GitHubStore";
+import styled from "styled-components";
+const { Title } = Typography;
 
 const gitHubStore = new GitHubStore();
 
 export const CreateRepo = () => {
-  const [repoName, setRepoName] = useState('');
+  const [repoName, setRepoName] = useState("");
 
   const repoParams: CreateUserRepoParams = {
     name: repoName,
@@ -17,8 +17,7 @@ export const CreateRepo = () => {
 
   const handleCreateRepository = () => {
     gitHubStore.createUserRepo(repoParams).then((result) => {
-      console.log(result);
-      setRepoName('');
+      setRepoName("");
     });
   };
 

@@ -1,6 +1,0 @@
-.search-form {
-  display: grid;
-  grid-template-columns: 295px 50px;
-  grid-template-rows: 1fr;
-  gap: 12px;
-}

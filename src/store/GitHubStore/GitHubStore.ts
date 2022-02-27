@@ -1,18 +1,18 @@
-import {ApiResponse} from './../../shared/store/ApiStore/types';
-import {HTTPMethod} from 'shared/store/ApiStore/types';
-import ApiStore from '../../shared/store/ApiStore';
+import qs from "qs";
+import { ApiStore, ApiResponse, HTTPMethod } from "shared/store/ApiStore";
+import { IOrganizationRepoItem, IUserRepoBranch, IUserRepoItem } from "types";
+
 import {
   CreateUserRepoParams,
   GetOrganizationReposListParams,
+  GetRepoBranchesParams,
   GetUserReposListParams,
   IGitHubStore,
-} from './types';
-import qs from 'qs';
-import {IOrganizationRepoItem, IUserRepoItem} from 'types';
+} from "./types";
 
-const BASE_URL = 'https://api.github.com';
+const BASE_URL = "https://api.github.com";
 
-const GITHUB_ACCESS_TOKEN = process.env.REACT_APP_GITHUB_ACCESS_TOKEN || '';
+const GITHUB_ACCESS_TOKEN = process.env.REACT_APP_GITHUB_ACCESS_TOKEN || "";
 
 export default class GitHubStore implements IGitHubStore {
   private readonly apiStore = new ApiStore(BASE_URL);
@@ -21,7 +21,7 @@ export default class GitHubStore implements IGitHubStore {
       method: HTTPMethod.GET,
       endpoint: `users/${params.username}/repos`,
       headers: {
-        accept: 'application/vnd.github.v3+json',
+        accept: "application/vnd.github.v3+json",
       },
       data: qs.stringify({
         type: params.type,
@@ -38,7 +38,7 @@ export default class GitHubStore implements IGitHubStore {
       method: HTTPMethod.POST,
       endpoint: `user/repos`,
       headers: {
-        accept: 'application/vnd.github.v3+json',
+        accept: "application/vnd.github.v3+json",
         Authorization: `token ${GITHUB_ACCESS_TOKEN}`,
       },
 
@@ -55,7 +55,7 @@ export default class GitHubStore implements IGitHubStore {
       method: HTTPMethod.GET,
       endpoint: `orgs/${params.org}/repos`,
       headers: {
-        accept: 'application/vnd.github.v3+json',
+        accept: "application/vnd.github.v3+json",
       },
       data: qs.stringify({
         type: params.type,
@@ -67,10 +67,31 @@ export default class GitHubStore implements IGitHubStore {
     };
   }
 
+  getRepoBranchesRequestParams(params: GetRepoBranchesParams) {
+    return {
+      method: HTTPMethod.GET,
+      endpoint: `repos/${params.owner}/${params.repo}/branches`,
+      headers: {
+        accept: "application/vnd.github.v3+json",
+      },
+      data: qs.stringify({
+        per_page: params.per_page,
+        page: params.page,
+      }),
+    };
+  }
+
   async getUserReposList(
     params: GetUserReposListParams
   ): Promise<ApiResponse<IUserRepoItem[]>> {
     const requestParams = this.getUserReposRequestParams(params);
+    return await this.apiStore.request(requestParams);
+  }
+
+  async getRepoBranches(
+    params: GetRepoBranchesParams
+  ): Promise<ApiResponse<IUserRepoBranch[]>> {
+    const requestParams = this.getRepoBranchesRequestParams(params);
     return await this.apiStore.request(requestParams);
   }
 
