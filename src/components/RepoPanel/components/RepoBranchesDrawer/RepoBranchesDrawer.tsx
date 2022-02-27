@@ -24,19 +24,17 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
         repo: selectedRepo?.name,
       };
 
-      setIsLoading(true);
       setBranches([]);
+      setIsLoading(true);
       setIsDrawerVisible(true);
-      gitHubStore
-        .getRepoBranches(repoParams)
-        .then((response) => {
-          if (response.success) {
-            setBranches(response.data);
-          }
-        })
-        .finally(() => {
-          setIsLoading(false);
-        });
+
+      (async () => {
+        const response = await gitHubStore.getRepoBranches(repoParams);
+        if (response.success) {
+          setBranches(response.data);
+        }
+        setIsLoading(false);
+      })();
     }
   }, [selectedRepo]);
 

@@ -8,14 +8,17 @@ import { RepoBranchesDrawer, RepoList, SearchForm } from "./components";
 interface RepoPanelProps {
   isLoading?: boolean;
   items: IUserRepoItem[];
+  onSearchSubmit: (searchValue: string) => void;
 }
 
-export const RepoPanel: FC<RepoPanelProps> = ({ items, isLoading }) => {
+export const RepoPanel: FC<RepoPanelProps> = ({
+  items,
+  isLoading,
+  onSearchSubmit,
+}) => {
   const [processableRepo, setProcessableRepo] = useState<IUserRepoItem | null>(
     null
   );
-
-  const handleSearchSubmit = (searchValue: string) => {};
 
   const handleTileClick = useCallback(
     (id: number) => {
@@ -27,7 +30,7 @@ export const RepoPanel: FC<RepoPanelProps> = ({ items, isLoading }) => {
 
   return (
     <Root>
-      <StyledSearchForm onSubmit={handleSearchSubmit} isLoading={isLoading} />
+      <StyledSearchForm onSearchSubmit={onSearchSubmit} isLoading={isLoading} />
 
       <RepoList items={items} isLoading={isLoading} onClick={handleTileClick} />
 

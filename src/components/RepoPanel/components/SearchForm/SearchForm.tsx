@@ -6,7 +6,7 @@ import styled from "styled-components";
 import { SearchButton } from "../SearchButton";
 
 interface SearchFormProps {
-  onSubmit: (searchValue: string) => void;
+  onSearchSubmit: (searchValue: string) => void;
   className?: string;
   isLoading?: boolean;
 }
@@ -14,11 +14,12 @@ interface SearchFormProps {
 export const SearchForm: FC<SearchFormProps> = ({
   className,
   isLoading,
-  onSubmit,
+  onSearchSubmit,
 }) => {
   const [searchValue, setSearchValue] = useState("");
+
   const handleSearchSubmit = () => {
-    onSubmit(searchValue);
+    onSearchSubmit(searchValue);
     setSearchValue("");
   };
 

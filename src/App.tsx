@@ -1,42 +1,42 @@
 import React, { FC, useEffect, useState } from "react";
 
 import { Col, Row } from "antd";
-import { CreateRepo, RepoPanel } from "components";
+import { RepoPanel } from "components";
 import { GitHubStore, GetUserReposListParams } from "store/GitHubStore";
 import styled from "styled-components";
 import { IUserRepoItem } from "types";
 
 const gitHubStore = new GitHubStore();
+const userParams: GetUserReposListParams = {
+  username: "hvoyka",
+  direction: "desc",
+};
 
 const App: FC = () => {
   const [items, setItems] = useState<IUserRepoItem[]>([]);
   const [isRequestLoading, setIsRequestLoading] = useState(false);
 
-  const userParams: GetUserReposListParams = {
-    username: "hvoyka",
-    direction: "desc",
-  };
+  const handleSearchSubmit = (searchValue: string) => {};
 
   useEffect(() => {
     setIsRequestLoading(true);
-    gitHubStore
-      .getUserReposList(userParams)
-      .then((response) => {
-        if (response.success) setItems(response.data);
-      })
-      .finally(() => {
-        setIsRequestLoading(false);
-      });
+
+    (async () => {
+      const response = await gitHubStore.getUserReposList(userParams);
+      if (response.success) setItems(response.data);
+      setIsRequestLoading(false);
+    })();
   }, []);
 
   return (
     <Root>
       <Row>
         <Col>
-          <RepoPanel items={items} isLoading={isRequestLoading} />
-        </Col>
-        <Col>
-          <CreateRepo />
+          <RepoPanel
+            items={items}
+            isLoading={isRequestLoading}
+            onSearchSubmit={handleSearchSubmit}
+          />
         </Col>
       </Row>
     </Root>
