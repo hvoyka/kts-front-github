@@ -3,9 +3,8 @@ import React, { FormEvent, useState } from "react";
 import { Typography, Input, Button } from "antd";
 import { GitHubStore, CreateUserRepoParams } from "store/GitHubStore";
 import styled from "styled-components";
+import { useLocalStore } from "utils";
 const { Title } = Typography;
-
-const gitHubStore = GitHubStore.getInstance();
 
 export const CreateRepoForm = () => {
   const [repoName, setRepoName] = useState("");
@@ -14,6 +13,8 @@ export const CreateRepoForm = () => {
     name: repoName,
     private: true,
   };
+
+  const gitHubStore = useLocalStore<GitHubStore>(() => new GitHubStore());
 
   const handleCreateRepository = (event: FormEvent) => {
     event.preventDefault();

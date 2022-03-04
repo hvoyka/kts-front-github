@@ -6,6 +6,7 @@ import "normalize.css";
 import "assets/styles/reset.css";
 import "assets/styles/global.css";
 import { BrowserRouter } from "react-router-dom";
+import "config/configureMobX";
 
 import App from "./App";
 

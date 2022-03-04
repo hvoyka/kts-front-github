@@ -1,7 +1,10 @@
+import { GITHUB_ACCESS_TOKEN } from "constant";
 import qs from "qs";
-import { ApiStore, ApiResponse, HTTPMethod } from "shared/store/ApiStore";
+import { ApiResponse, HTTPMethod } from "shared/store/ApiStore";
+import RootStore from "shared/store/RootStore";
 import { IOrganizationRepoItem, IUserRepoBranch, IUserRepoItem } from "types";
 
+import { ILocalStore } from "./../../utils/userLocalStore";
 import {
   CreateUserRepoParams,
   GetOrganizationReposListParams,
@@ -10,23 +13,10 @@ import {
   IGitHubStore,
 } from "./types";
 
-const BASE_URL = "https://api.github.com";
+export default class GitHubStore implements IGitHubStore, ILocalStore {
+  private readonly apiStore = RootStore.api;
 
-const GITHUB_ACCESS_TOKEN = process.env.REACT_APP_GITHUB_ACCESS_TOKEN || "";
-
-export default class GitHubStore implements IGitHubStore {
-  private static _instance: GitHubStore;
-
-  public static getInstance(): GitHubStore {
-    if (!GitHubStore._instance) {
-      GitHubStore._instance = new GitHubStore();
-    }
-
-    return GitHubStore._instance;
-  }
-
-  private readonly apiStore = new ApiStore(BASE_URL);
-  getUserReposRequestParams(params: GetUserReposListParams) {
+  private getUserReposRequestParams(params: GetUserReposListParams) {
     return {
       method: HTTPMethod.GET,
       endpoint: `users/${params.username}/repos`,
@@ -43,7 +33,7 @@ export default class GitHubStore implements IGitHubStore {
     };
   }
 
-  createUserRepoRequestParams(params: CreateUserRepoParams) {
+  private createUserRepoRequestParams(params: CreateUserRepoParams) {
     return {
       method: HTTPMethod.POST,
       endpoint: `user/repos`,
@@ -60,7 +50,7 @@ export default class GitHubStore implements IGitHubStore {
     };
   }
 
-  getOrgReposRequestParams(params: GetOrganizationReposListParams) {
+  private getOrgReposRequestParams(params: GetOrganizationReposListParams) {
     return {
       method: HTTPMethod.GET,
       endpoint: `orgs/${params.org}/repos`,
@@ -77,7 +67,7 @@ export default class GitHubStore implements IGitHubStore {
     };
   }
 
-  getRepoBranchesRequestParams(params: GetRepoBranchesParams) {
+  private getRepoBranchesRequestParams(params: GetRepoBranchesParams) {
     return {
       method: HTTPMethod.GET,
       endpoint: `repos/${params.owner}/${params.repo}/branches`,
@@ -118,4 +108,6 @@ export default class GitHubStore implements IGitHubStore {
     const requestParams = this.getOrgReposRequestParams(params);
     return await this.apiStore.request(requestParams);
   }
+
+  destroy(): void {}
 }

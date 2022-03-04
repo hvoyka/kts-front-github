@@ -6,8 +6,7 @@ import { ROUTES } from "routes/ROUTES";
 import { GitHubStore, GetRepoBranchesParams } from "store/GitHubStore";
 import styled from "styled-components";
 import { IUserRepoBranch } from "types";
-
-const gitHubStore = GitHubStore.getInstance();
+import { useLocalStore } from "utils";
 
 export const RepoBranchesDrawer: FC = () => {
   const [branches, setBranches] = useState<IUserRepoBranch[]>([]);
@@ -15,6 +14,7 @@ export const RepoBranchesDrawer: FC = () => {
   const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   let { repoName } = useParams();
   let navigate = useNavigate();
+  const gitHubStore = useLocalStore<GitHubStore>(() => new GitHubStore());
 
   const handleDrawerClose = () => {
     setIsDrawerVisible(false);

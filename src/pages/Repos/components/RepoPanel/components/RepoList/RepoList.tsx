@@ -1,7 +1,6 @@
-import { USER_EMPTY_REPO_MOCK } from "constants/mock";
-
 import React, { FC } from "react";
 
+import { USER_EMPTY_REPO_MOCK } from "constant";
 import styled from "styled-components";
 import { IUserRepoItem } from "types";
 
