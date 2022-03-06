@@ -1,10 +1,18 @@
 import { GITHUB_ACCESS_TOKEN } from "constant";
+import {
+  action,
+  computed,
+  makeObservable,
+  observable,
+  runInAction,
+} from "mobx";
 import qs from "qs";
 import { ApiResponse, HTTPMethod } from "shared/store/ApiStore";
 import RootStore from "shared/store/RootStore";
 import { IOrganizationRepoItem, IUserRepoBranch, IUserRepoItem } from "types";
+import { Meta } from "utils";
+import { ILocalStore } from "utils/userLocalStore";
 
-import { ILocalStore } from "./../../utils/userLocalStore";
 import {
   CreateUserRepoParams,
   GetOrganizationReposListParams,
@@ -13,8 +21,30 @@ import {
   IGitHubStore,
 } from "./types";
 
+type PrivateFields = "_userRepoList" | "_userRepoMeta";
+
 export default class GitHubStore implements IGitHubStore, ILocalStore {
-  private readonly apiStore = RootStore.api;
+  private readonly _apiStore = RootStore.api;
+  private _userRepoList: IUserRepoItem[] = [];
+  private _userRepoMeta: Meta = Meta.INITIAL;
+
+  constructor() {
+    makeObservable<GitHubStore, PrivateFields>(this, {
+      _userRepoList: observable.ref,
+      _userRepoMeta: observable,
+      userRepoList: computed,
+      userRepoMeta: computed,
+      getUserReposList: action,
+    });
+  }
+
+  get userRepoList(): IUserRepoItem[] {
+    return this._userRepoList;
+  }
+
+  get userRepoMeta(): Meta {
+    return this._userRepoMeta;
+  }
 
   private getUserReposRequestParams(params: GetUserReposListParams) {
     return {
@@ -81,32 +111,44 @@ export default class GitHubStore implements IGitHubStore, ILocalStore {
     };
   }
 
-  async getUserReposList(
-    params: GetUserReposListParams
-  ): Promise<ApiResponse<IUserRepoItem[]>> {
+  async getUserReposList(params: GetUserReposListParams): Promise<void> {
+    this._userRepoMeta = Meta.LOADING;
+    this._userRepoList = [];
+
     const requestParams = this.getUserReposRequestParams(params);
-    return await this.apiStore.request(requestParams);
+    const response = await this._apiStore.request<IUserRepoItem[]>(
+      requestParams
+    );
+
+    runInAction(() => {
+      if (response.success) {
+        this._userRepoMeta = Meta.SUCCESS;
+        this._userRepoList = response.data;
+      } else {
+        this._userRepoMeta = Meta.ERROR;
+      }
+    });
   }
 
   async getRepoBranches(
     params: GetRepoBranchesParams
   ): Promise<ApiResponse<IUserRepoBranch[]>> {
     const requestParams = this.getRepoBranchesRequestParams(params);
-    return await this.apiStore.request(requestParams);
+    return await this._apiStore.request(requestParams);
   }
 
   async createUserRepo(
     params: CreateUserRepoParams
   ): Promise<ApiResponse<IUserRepoItem>> {
     const requestParams = this.createUserRepoRequestParams(params);
-    return await this.apiStore.request(requestParams);
+    return await this._apiStore.request(requestParams);
   }
 
   async getOrganizationReposList(
     params: GetOrganizationReposListParams
   ): Promise<ApiResponse<IOrganizationRepoItem[]>> {
     const requestParams = this.getOrgReposRequestParams(params);
-    return await this.apiStore.request(requestParams);
+    return await this._apiStore.request(requestParams);
   }
 
   destroy(): void {}
