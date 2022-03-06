@@ -14,6 +14,12 @@ import {
   UserRepoItemApi,
   UserRepoItemModel,
 } from "store/models/github";
+import {
+  CollectionModel,
+  getInitialCollectionModal,
+  linearizeCollection,
+  normalizeCollection,
+} from "store/models/shared";
 import { IOrganizationRepoItem, IUserRepoBranch } from "types";
 import { Meta } from "utils";
 import { ILocalStore } from "utils/userLocalStore";
@@ -30,7 +36,8 @@ type PrivateFields = "_userRepoList" | "_userRepoMeta";
 
 export default class GitHubStore implements IGitHubStore, ILocalStore {
   private readonly _apiStore = RootStore.api;
-  private _userRepoList: UserRepoItemModel[] = [];
+  private _userRepoList: CollectionModel<number, UserRepoItemModel> =
+    getInitialCollectionModal();
   private _userRepoMeta: Meta = Meta.INITIAL;
 
   constructor() {
@@ -44,7 +51,7 @@ export default class GitHubStore implements IGitHubStore, ILocalStore {
   }
 
   get userRepoList(): UserRepoItemModel[] {
-    return this._userRepoList;
+    return linearizeCollection(this._userRepoList);
   }
 
   get userRepoMeta(): Meta {
@@ -118,7 +125,7 @@ export default class GitHubStore implements IGitHubStore, ILocalStore {
 
   async getUserReposList(params: GetUserReposListParams): Promise<void> {
     this._userRepoMeta = Meta.LOADING;
-    this._userRepoList = [];
+    this._userRepoList = getInitialCollectionModal();
 
     const requestParams = this.getUserReposRequestParams(params);
     const response = await this._apiStore.request<UserRepoItemApi[]>(
@@ -128,12 +135,22 @@ export default class GitHubStore implements IGitHubStore, ILocalStore {
     runInAction(() => {
       if (response.success) {
         try {
+          const userRepoList: UserRepoItemModel[] = [];
+
+          for (const item of response.data) {
+            userRepoList.push(normalizeUserRepoItem(item));
+          }
+
+          this._userRepoList = normalizeCollection(
+            userRepoList,
+            (listItem) => listItem.id
+          );
+
           this._userRepoMeta = Meta.SUCCESS;
-          this._userRepoList = response.data.map(normalizeUserRepoItem);
         } catch (error) {
           console.error(error);
           this._userRepoMeta = Meta.ERROR;
-          this._userRepoList = [];
+          this._userRepoList = getInitialCollectionModal();
         }
       } else {
         this._userRepoMeta = Meta.ERROR;
