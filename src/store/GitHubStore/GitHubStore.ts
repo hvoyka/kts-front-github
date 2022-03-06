@@ -11,7 +11,6 @@ import {
 } from "./types";
 
 const BASE_URL = "https://api.github.com";
-
 const GITHUB_ACCESS_TOKEN = process.env.REACT_APP_GITHUB_ACCESS_TOKEN || "";
 
 export default class GitHubStore implements IGitHubStore {

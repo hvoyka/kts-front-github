@@ -1,18 +1,56 @@
-import React, { FC } from "react";
+import React, { FC, FormEvent, useState } from "react";
 
-import { Col, Row } from "antd";
+import { Button, Col, Input, Row, Typography } from "antd";
 import { MainLayout } from "layouts";
+import { CreateUserRepoParams, GitHubStore } from "store/GitHubStore";
+import styled from "styled-components";
 
-import { CreateRepoForm } from "./components";
+const { Title } = Typography;
+
+const gitHubStore = GitHubStore.getInstance();
 
 export const CreateRepo: FC = () => {
+  const [repoName, setRepoName] = useState("");
+
+  const repoParams: CreateUserRepoParams = {
+    name: repoName,
+    private: true,
+  };
+
+  const handleCreateRepository = (event: FormEvent) => {
+    event.preventDefault();
+
+    gitHubStore.createUserRepo(repoParams).then((result) => {
+      setRepoName("");
+    });
+  };
+
   return (
     <MainLayout>
       <Row>
         <Col>
-          <CreateRepoForm />
+          <FormWrapper>
+            <Title>Create repository</Title>
+            <form onSubmit={handleCreateRepository}>
+              <StyledInput
+                type="text"
+                placeholder="Repository name"
+                onChange={(event) => setRepoName(event.target.value)}
+                value={repoName}
+              />
+              <Button>Create repository</Button>
+            </form>
+          </FormWrapper>
         </Col>
       </Row>
     </MainLayout>
   );
 };
+
+const FormWrapper = styled.div`
+  padding: 20px;
+`;
+
+const StyledInput = styled(Input)`
+  margin-bottom: 20px;
+`;

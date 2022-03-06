@@ -10,8 +10,7 @@ import { IUserRepoItem } from "types";
 import { RepoPanel } from "./components";
 
 export const Repos: FC = () => {
-  const PER_PAGE = 6;
-  const { items, isLoading, loadRepos } = useReposContext();
+  const { items, isFirstLoad, loadRepos } = useReposContext();
   const [loadedItems, setLoadedItems] = useState<IUserRepoItem[]>([]);
   const [currentPage, setCurrentPage] = useState(1);
   const [hasMore, setHasMore] = useState(true);
@@ -20,7 +19,6 @@ export const Repos: FC = () => {
 
   useEffect(() => {
     loadRepos({
-      per_page: PER_PAGE,
       page: currentPage,
     });
   }, []);
@@ -36,7 +34,6 @@ export const Repos: FC = () => {
 
   const fetchMoreData = () => {
     loadRepos({
-      per_page: PER_PAGE,
       page: currentPage + 1,
     });
     setCurrentPage((prevPage) => prevPage + 1);
@@ -55,7 +52,7 @@ export const Repos: FC = () => {
           >
             <RepoPanel
               items={loadedItems}
-              isLoading={isLoading}
+              isLoading={isFirstLoad}
               onSearchSubmit={onSearchSubmit}
             />
           </InfiniteScroll>

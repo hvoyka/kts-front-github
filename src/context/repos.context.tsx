@@ -9,7 +9,7 @@ const gitHubStore = GitHubStore.getInstance();
 
 const initialContexValues: IReposContext = {
   items: [],
-  isLoading: false,
+  isFirstLoad: false,
   loadRepos: () => {},
 };
 
@@ -17,11 +17,12 @@ const ReposContext = createContext(initialContexValues);
 
 export const ReposProvider: FC = ({ children }) => {
   const [items, setItems] = useState<IUserRepoItem[]>([]);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isFirstLoad, setIsFirstLoad] = useState(true);
 
   const userParams: GetUserReposListParams = {
     username: "hvoyka",
     direction: "desc",
+    per_page: 6,
   };
 
   const loadRepos = async (customParams?: Partial<GetUserReposListParams>) => {
@@ -30,14 +31,14 @@ export const ReposProvider: FC = ({ children }) => {
       ...customParams,
     });
     if (response.success) setItems(response.data);
-    setIsLoading(false);
+    setIsFirstLoad(false);
   };
 
   return (
     <ReposContext.Provider
       value={{
         items,
-        isLoading,
+        isFirstLoad: isFirstLoad,
         loadRepos,
       }}
     >

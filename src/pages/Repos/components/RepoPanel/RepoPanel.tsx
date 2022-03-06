@@ -1,6 +1,7 @@
 import React, { FC, useCallback } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { ROUTES } from "routes/ROUTES";
 import styled from "styled-components";
 import { IUserRepoItem } from "types";
 
@@ -23,7 +24,7 @@ export const RepoPanel: FC<RepoPanelProps> = ({
   const handleTileClick = useCallback(
     (id: number) => {
       const currentRepo = items.find((item) => item.id === id);
-      navigate(`/repos/${currentRepo?.name}`);
+      navigate(ROUTES.REPO(currentRepo?.name));
     },
     [items]
   );

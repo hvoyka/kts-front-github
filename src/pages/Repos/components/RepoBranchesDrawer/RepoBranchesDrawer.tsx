@@ -12,12 +12,10 @@ const gitHubStore = GitHubStore.getInstance();
 export const RepoBranchesDrawer: FC = () => {
   const [branches, setBranches] = useState<IUserRepoBranch[]>([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
   let { repoName } = useParams();
   let navigate = useNavigate();
 
   const handleDrawerClose = () => {
-    setIsDrawerVisible(false);
     navigate(ROUTES.REPOS);
   };
 
@@ -30,14 +28,12 @@ export const RepoBranchesDrawer: FC = () => {
 
       setBranches([]);
       setIsLoading(true);
-      setIsDrawerVisible(true);
 
       (async () => {
         const response = await gitHubStore.getRepoBranches(repoParams);
         if (response.success) {
           setBranches(response.data);
         } else {
-          setIsDrawerVisible(false);
           navigate(ROUTES.REPOS);
         }
         setIsLoading(false);
@@ -50,7 +46,7 @@ export const RepoBranchesDrawer: FC = () => {
       title="Repository branches"
       placement="right"
       onClose={handleDrawerClose}
-      visible={isDrawerVisible}
+      visible={!!repoName}
     >
       <NameWrapper>
         Repository: <Name>{isLoading ? "Loading..." : repoName}</Name>
