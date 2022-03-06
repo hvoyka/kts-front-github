@@ -1,9 +1,12 @@
 import React, { FC, useCallback, useState } from "react";
 
+import { useNavigate } from "react-router-dom";
+import { ROUTES } from "routes/ROUTES";
 import styled from "styled-components";
 import { IUserRepoItem } from "types";
 
-import { RepoBranchesDrawer, RepoList, SearchForm } from "./components";
+import { RepoBranchesDrawer } from "../RepoBranchesDrawer";
+import { RepoList, SearchForm } from "./components";
 
 interface RepoPanelProps {
   isLoading?: boolean;
@@ -16,14 +19,14 @@ export const RepoPanel: FC<RepoPanelProps> = ({
   isLoading,
   onSearchSubmit,
 }) => {
-  const [processableRepo, setProcessableRepo] = useState<IUserRepoItem | null>(
-    null
-  );
+  let navigate = useNavigate();
+  const [ownerLogin, setOwnerLogin] = useState<string | undefined>("");
 
   const handleTileClick = useCallback(
     (id: number) => {
       const currentRepo = items.find((item) => item.id === id);
-      setProcessableRepo(currentRepo || null);
+      setOwnerLogin(currentRepo?.owner.login);
+      navigate(ROUTES.REPO(currentRepo?.name));
     },
     [items]
   );
@@ -31,10 +34,8 @@ export const RepoPanel: FC<RepoPanelProps> = ({
   return (
     <Root>
       <StyledSearchForm onSearchSubmit={onSearchSubmit} isLoading={isLoading} />
-
       <RepoList items={items} isLoading={isLoading} onClick={handleTileClick} />
-
-      <RepoBranchesDrawer selectedRepo={processableRepo} />
+      <RepoBranchesDrawer ownerLogin={ownerLogin} />
     </Root>
   );
 };

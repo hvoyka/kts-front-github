@@ -1,52 +1,17 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC } from "react";
 
-import { Col, Row } from "antd";
-import { RepoPanel } from "components";
-import { GitHubStore, GetUserReposListParams } from "store/GitHubStore";
-import styled from "styled-components";
-import { IUserRepoItem } from "types";
-
-const gitHubStore = new GitHubStore();
-const userParams: GetUserReposListParams = {
-  username: "hvoyka",
-  direction: "desc",
-};
+import { ReposProvider } from "context";
+import { BrowserRouter } from "react-router-dom";
+import { Router } from "routes/Router";
 
 const App: FC = () => {
-  const [items, setItems] = useState<IUserRepoItem[]>([]);
-  const [isRequestLoading, setIsRequestLoading] = useState(false);
-
-  const handleSearchSubmit = (searchValue: string) => {};
-
-  useEffect(() => {
-    setIsRequestLoading(true);
-
-    (async () => {
-      const response = await gitHubStore.getUserReposList(userParams);
-      if (response.success) setItems(response.data);
-      setIsRequestLoading(false);
-    })();
-  }, []);
-
   return (
-    <Root>
-      <Row>
-        <Col>
-          <RepoPanel
-            items={items}
-            isLoading={isRequestLoading}
-            onSearchSubmit={handleSearchSubmit}
-          />
-        </Col>
-      </Row>
-    </Root>
+    <BrowserRouter>
+      <ReposProvider>
+        <Router />
+      </ReposProvider>
+    </BrowserRouter>
   );
 };
-
-const Root = styled.main`
-  max-width: 1440px;
-  width: 100%;
-  margin: 0 auto;
-`;
 
 export default App;
