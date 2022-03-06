@@ -10,8 +10,13 @@ import {
 } from "store/RepoBranchesStore";
 import styled from "styled-components";
 import { Meta, useLocalStore } from "utils";
+interface RepoBranchesDrawerProps {
+  ownerLogin?: string;
+}
 
-const RepoBranchesDrawer: FC = () => {
+export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
+  ownerLogin,
+}) => {
   let { repoName } = useParams();
   let navigate = useNavigate();
 
@@ -24,15 +29,15 @@ const RepoBranchesDrawer: FC = () => {
   };
 
   useEffect(() => {
-    if (repoName) {
+    if (repoName && ownerLogin) {
       const repoParams: GetRepoBranchesParams = {
-        owner: "hvoyka",
+        owner: ownerLogin,
         repo: repoName,
       };
 
       repoBranchesStore.getRepoBranches(repoParams);
     }
-  }, [repoName]);
+  }, [repoName, ownerLogin]);
 
   return (
     <Drawer
