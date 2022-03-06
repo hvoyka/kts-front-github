@@ -1,14 +1,14 @@
 import React, { FC } from "react";
 
 import { USER_EMPTY_REPO_MOCK } from "constant";
+import { UserRepoItemModel } from "store/models/github";
 import styled from "styled-components";
-import { IUserRepoItem } from "types";
 
 import { RepoTile } from "../RepoTile";
 
 interface RepoListProps {
   isLoading?: boolean;
-  items: IUserRepoItem[];
+  items: UserRepoItemModel[];
   onClick: (id: number) => void;
 }
 

@@ -1,15 +1,15 @@
 import React, { FC, useCallback } from "react";
 
 import { useNavigate } from "react-router-dom";
+import { UserRepoItemModel } from "store/models/github";
 import styled from "styled-components";
-import { IUserRepoItem } from "types";
 
 import { RepoBranchesDrawer } from "../RepoBranchesDrawer";
 import { RepoList, SearchForm } from "./components";
 
 interface RepoPanelProps {
   isLoading?: boolean;
-  items: IUserRepoItem[];
+  items: UserRepoItemModel[];
   onSearchSubmit: (searchValue: string) => void;
 }
 

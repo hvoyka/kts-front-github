@@ -1,5 +1,6 @@
 import { ApiResponse } from "shared/store/ApiStore/types";
-import { IOrganizationRepoItem, IUserRepoBranch, IUserRepoItem } from "types";
+import { UserRepoItemApi } from "store/models/github";
+import { IOrganizationRepoItem, IUserRepoBranch } from "types";
 
 type ReposTypes = "all" | "owner" | "member";
 type ReposSort = "created" | "updated" | " pushed" | " full_name";
@@ -39,7 +40,7 @@ export interface IGitHubStore {
 
   createUserRepo(
     params: CreateUserRepoParams
-  ): Promise<ApiResponse<IUserRepoItem>>;
+  ): Promise<ApiResponse<UserRepoItemApi>>;
 
   getRepoBranches(
     params: GetRepoBranchesParams

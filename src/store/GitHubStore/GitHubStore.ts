@@ -9,7 +9,12 @@ import {
 import qs from "qs";
 import { ApiResponse, HTTPMethod } from "shared/store/ApiStore";
 import RootStore from "shared/store/RootStore";
-import { IOrganizationRepoItem, IUserRepoBranch, IUserRepoItem } from "types";
+import {
+  normalizeUserRepoItem,
+  UserRepoItemApi,
+  UserRepoItemModel,
+} from "store/models/github";
+import { IOrganizationRepoItem, IUserRepoBranch } from "types";
 import { Meta } from "utils";
 import { ILocalStore } from "utils/userLocalStore";
 
@@ -25,7 +30,7 @@ type PrivateFields = "_userRepoList" | "_userRepoMeta";
 
 export default class GitHubStore implements IGitHubStore, ILocalStore {
   private readonly _apiStore = RootStore.api;
-  private _userRepoList: IUserRepoItem[] = [];
+  private _userRepoList: UserRepoItemModel[] = [];
   private _userRepoMeta: Meta = Meta.INITIAL;
 
   constructor() {
@@ -38,7 +43,7 @@ export default class GitHubStore implements IGitHubStore, ILocalStore {
     });
   }
 
-  get userRepoList(): IUserRepoItem[] {
+  get userRepoList(): UserRepoItemModel[] {
     return this._userRepoList;
   }
 
@@ -116,14 +121,20 @@ export default class GitHubStore implements IGitHubStore, ILocalStore {
     this._userRepoList = [];
 
     const requestParams = this.getUserReposRequestParams(params);
-    const response = await this._apiStore.request<IUserRepoItem[]>(
+    const response = await this._apiStore.request<UserRepoItemApi[]>(
       requestParams
     );
 
     runInAction(() => {
       if (response.success) {
-        this._userRepoMeta = Meta.SUCCESS;
-        this._userRepoList = response.data;
+        try {
+          this._userRepoMeta = Meta.SUCCESS;
+          this._userRepoList = response.data.map(normalizeUserRepoItem);
+        } catch (error) {
+          console.error(error);
+          this._userRepoMeta = Meta.ERROR;
+          this._userRepoList = [];
+        }
       } else {
         this._userRepoMeta = Meta.ERROR;
       }
@@ -139,7 +150,7 @@ export default class GitHubStore implements IGitHubStore, ILocalStore {
 
   async createUserRepo(
     params: CreateUserRepoParams
-  ): Promise<ApiResponse<IUserRepoItem>> {
+  ): Promise<ApiResponse<UserRepoItemApi>> {
     const requestParams = this.createUserRepoRequestParams(params);
     return await this._apiStore.request(requestParams);
   }

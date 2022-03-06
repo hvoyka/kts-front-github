@@ -1,13 +1,15 @@
+import { UserRepoItemModel } from "store/models/github";
+
 export const BASE_URL = process.env.REACT_APP_BASE_URL || "";
 export const GITHUB_ACCESS_TOKEN =
   process.env.REACT_APP_GITHUB_ACCESS_TOKEN || "";
 
-export const USER_EMPTY_REPO_MOCK = {
+export const USER_EMPTY_REPO_MOCK: UserRepoItemModel = {
   name: "",
-  stargazers_count: 0,
+  stargazersCount: 0,
 
-  html_url: "",
+  htmlUrl: "",
   id: 0,
-  owner: { login: "", avatar_url: null },
-  updated_at: "",
+  owner: { id: 0, url: "", login: "", avatarUrl: null },
+  updatedAt: new Date(),
 };

@@ -4,20 +4,19 @@ import { Skeleton } from "antd";
 import { Avatar } from "components";
 import { StarIcon } from "components/icons";
 import dayjs from "dayjs";
+import { UserRepoItemModel } from "store/models/github";
 import styled from "styled-components";
-import { IUserRepoItem } from "types";
 
 type RepoTileProps = {
-  item: IUserRepoItem;
+  item: UserRepoItemModel;
   isLoading?: boolean;
   onClick: (id: number) => void;
 };
 
 export const RepoTile: FC<RepoTileProps> = ({ item, isLoading, onClick }) => {
-  const { id, name, owner, html_url, stargazers_count, updated_at } =
-    item || {};
+  const { id, name, owner, htmlUrl, stargazersCount, updatedAt } = item || {};
 
-  const updateDate = dayjs(updated_at).format("D MMM");
+  const updateDate = dayjs(updatedAt).format("D MMM");
   const repoNameFirstLetter = name[0]?.toUpperCase();
 
   const handleClickOnCard = (
@@ -47,20 +46,20 @@ export const RepoTile: FC<RepoTileProps> = ({ item, isLoading, onClick }) => {
       ) : (
         <>
           <Avatar
-            src={owner.avatar_url}
+            src={owner.avatarUrl}
             alt="avatar"
             letter={repoNameFirstLetter}
           />
 
           <Content>
             <Name>{name}</Name>
-            <Link href={html_url}>{owner?.login}</Link>
+            <Link href={htmlUrl}>{owner?.login}</Link>
 
             <div>
               <StarIconWrapper>
                 <StyledStarIcon />
               </StarIconWrapper>
-              <StarCount>{stargazers_count}</StarCount>
+              <StarCount>{stargazersCount}</StarCount>
               <Date>Updated {updateDate}</Date>
             </div>
           </Content>
