@@ -1,19 +1,8 @@
 import { ApiResponse } from "shared/store/ApiStore/types";
 import { UserRepoItemApi } from "store/models/github";
+import { ReposDirection, ReposSort, ReposTypes } from "store/types";
 import { IOrganizationRepoItem, IUserRepoBranch } from "types";
 
-type ReposTypes = "all" | "owner" | "member";
-type ReposSort = "created" | "updated" | " pushed" | " full_name";
-type ReposDirection = "asc " | "desc";
-
-export interface GetUserReposListParams {
-  username: string;
-  type?: ReposTypes;
-  sort?: ReposSort;
-  direction?: ReposDirection;
-  per_page?: number;
-  page?: number;
-}
 export interface CreateUserRepoParams {
   name: string;
   private?: boolean;
@@ -36,8 +25,6 @@ export interface GetOrganizationReposListParams {
 }
 
 export interface IGitHubStore {
-  getUserReposList(params: GetUserReposListParams): Promise<void>;
-
   createUserRepo(
     params: CreateUserRepoParams
   ): Promise<ApiResponse<UserRepoItemApi>>;

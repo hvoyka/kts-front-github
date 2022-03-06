@@ -3,18 +3,20 @@ import React, { FC, useEffect } from "react";
 import { Col, Row } from "antd";
 import { MainLayout } from "layouts";
 import { observer } from "mobx-react-lite";
-import { GitHubStore } from "store/GitHubStore";
+import { UserReposStore } from "store/UserReposStore";
 import { Meta, useLocalStore } from "utils";
 
 import { RepoPanel } from "./components";
 
 const Repos: FC = () => {
-  const gitHubStore = useLocalStore<GitHubStore>(() => new GitHubStore());
+  const userReposStore = useLocalStore<UserReposStore>(
+    () => new UserReposStore()
+  );
 
   const onSearchSubmit = (searchValue: string) => {};
 
   useEffect(() => {
-    gitHubStore.getUserReposList({
+    userReposStore.getUserReposList({
       username: "hvoyka",
       direction: "desc",
     });
@@ -25,8 +27,8 @@ const Repos: FC = () => {
       <Row>
         <Col>
           <RepoPanel
-            items={gitHubStore.userRepoList}
-            isLoading={gitHubStore.userRepoMeta === Meta.LOADING}
+            items={userReposStore.userRepoList}
+            isLoading={userReposStore.userRepoMeta === Meta.LOADING}
             onSearchSubmit={onSearchSubmit}
           />
         </Col>
