@@ -6,7 +6,7 @@ type ReposSort = "created" | "updated" | " pushed" | " full_name";
 type ReposDirection = "asc " | "desc";
 
 export interface GetUserReposListParams {
-  username: string;
+  username?: string;
   type?: ReposTypes;
   sort?: ReposSort;
   direction?: ReposDirection;

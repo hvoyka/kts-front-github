@@ -9,7 +9,13 @@ import { IUserRepoBranch } from "types";
 
 const gitHubStore = GitHubStore.getInstance();
 
-export const RepoBranchesDrawer: FC = () => {
+interface RepoBranchesDrawerProps {
+  ownerLogin?: string;
+}
+
+export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
+  ownerLogin,
+}) => {
   const [branches, setBranches] = useState<IUserRepoBranch[]>([]);
   const [isLoading, setIsLoading] = useState(false);
   let { repoName } = useParams();
@@ -20,9 +26,9 @@ export const RepoBranchesDrawer: FC = () => {
   };
 
   useEffect(() => {
-    if (repoName) {
+    if (repoName && ownerLogin) {
       const repoParams: GetRepoBranchesParams = {
-        owner: "hvoyka",
+        owner: ownerLogin,
         repo: repoName,
       };
 
@@ -39,7 +45,7 @@ export const RepoBranchesDrawer: FC = () => {
         setIsLoading(false);
       })();
     }
-  }, [repoName]);
+  }, [repoName, ownerLogin]);
 
   return (
     <Drawer

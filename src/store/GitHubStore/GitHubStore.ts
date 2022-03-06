@@ -12,6 +12,11 @@ import {
 
 const BASE_URL = "https://api.github.com";
 const GITHUB_ACCESS_TOKEN = process.env.REACT_APP_GITHUB_ACCESS_TOKEN || "";
+const initialUserListParams: GetUserReposListParams = {
+  username: "hvoyka",
+  direction: "desc",
+  per_page: 6,
+};
 
 export default class GitHubStore implements IGitHubStore {
   private static _instance: GitHubStore;
@@ -25,6 +30,7 @@ export default class GitHubStore implements IGitHubStore {
   }
 
   private readonly apiStore = new ApiStore(BASE_URL);
+
   getUserReposRequestParams(params: GetUserReposListParams) {
     return {
       method: HTTPMethod.GET,
@@ -91,9 +97,12 @@ export default class GitHubStore implements IGitHubStore {
   }
 
   async getUserReposList(
-    params: GetUserReposListParams
+    params?: GetUserReposListParams
   ): Promise<ApiResponse<IUserRepoItem[]>> {
-    const requestParams = this.getUserReposRequestParams(params);
+    const requestParams = this.getUserReposRequestParams({
+      ...initialUserListParams,
+      ...params,
+    });
     return await this.apiStore.request(requestParams);
   }
 

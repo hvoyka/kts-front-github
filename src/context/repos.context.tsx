@@ -19,17 +19,8 @@ export const ReposProvider: FC = ({ children }) => {
   const [items, setItems] = useState<IUserRepoItem[]>([]);
   const [isFirstLoad, setIsFirstLoad] = useState(true);
 
-  const userParams: GetUserReposListParams = {
-    username: "hvoyka",
-    direction: "desc",
-    per_page: 6,
-  };
-
   const loadRepos = async (customParams?: Partial<GetUserReposListParams>) => {
-    const response = await gitHubStore.getUserReposList({
-      ...userParams,
-      ...customParams,
-    });
+    const response = await gitHubStore.getUserReposList({ ...customParams });
     if (response.success) setItems(response.data);
     setIsFirstLoad(false);
   };

@@ -1,4 +1,4 @@
-import React, { FC, useCallback } from "react";
+import React, { FC, useCallback, useState } from "react";
 
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "routes/ROUTES";
@@ -20,10 +20,12 @@ export const RepoPanel: FC<RepoPanelProps> = ({
   onSearchSubmit,
 }) => {
   let navigate = useNavigate();
+  const [ownerLogin, setOwnerLogin] = useState<string | undefined>("");
 
   const handleTileClick = useCallback(
     (id: number) => {
       const currentRepo = items.find((item) => item.id === id);
+      setOwnerLogin(currentRepo?.owner.login);
       navigate(ROUTES.REPO(currentRepo?.name));
     },
     [items]
@@ -33,7 +35,7 @@ export const RepoPanel: FC<RepoPanelProps> = ({
     <Root>
       <StyledSearchForm onSearchSubmit={onSearchSubmit} isLoading={isLoading} />
       <RepoList items={items} isLoading={isLoading} onClick={handleTileClick} />
-      <RepoBranchesDrawer />
+      <RepoBranchesDrawer ownerLogin={ownerLogin} />
     </Root>
   );
 };
