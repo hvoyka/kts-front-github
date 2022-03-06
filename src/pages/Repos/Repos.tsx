@@ -27,8 +27,8 @@ const Repos: FC = () => {
       <Row>
         <Col>
           <RepoPanel
-            items={userReposStore.userRepoList}
-            isLoading={userReposStore.userRepoMeta === Meta.LOADING}
+            items={userReposStore.list}
+            isLoading={userReposStore.meta === Meta.LOADING}
             onSearchSubmit={onSearchSubmit}
           />
         </Col>

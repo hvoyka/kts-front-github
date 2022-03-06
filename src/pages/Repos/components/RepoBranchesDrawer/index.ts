@@ -1,1 +1,1 @@
-export { RepoBranchesDrawer } from "./RepoBranchesDrawer";
+export { default as RepoBranchesDrawer } from "./RepoBranchesDrawer";

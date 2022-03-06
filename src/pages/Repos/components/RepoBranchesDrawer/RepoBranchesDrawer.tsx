@@ -1,23 +1,25 @@
-import React, { FC, useEffect, useState } from "react";
+import React, { FC, useEffect } from "react";
 
 import { Drawer } from "antd";
+import { observer } from "mobx-react-lite";
 import { useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "routes/ROUTES";
-import { GitHubStore, GetRepoBranchesParams } from "store/GitHubStore";
+import {
+  GetRepoBranchesParams,
+  RepoBranchesStore,
+} from "store/RepoBranchesStore";
 import styled from "styled-components";
-import { IUserRepoBranch } from "types";
-import { useLocalStore } from "utils";
+import { Meta, useLocalStore } from "utils";
 
-export const RepoBranchesDrawer: FC = () => {
-  const [branches, setBranches] = useState<IUserRepoBranch[]>([]);
-  const [isLoading, setIsLoading] = useState(false);
-  const [isDrawerVisible, setIsDrawerVisible] = useState(false);
+const RepoBranchesDrawer: FC = () => {
   let { repoName } = useParams();
   let navigate = useNavigate();
-  const gitHubStore = useLocalStore<GitHubStore>(() => new GitHubStore());
+
+  const repoBranchesStore = useLocalStore<RepoBranchesStore>(
+    () => new RepoBranchesStore()
+  );
 
   const handleDrawerClose = () => {
-    setIsDrawerVisible(false);
     navigate(ROUTES.REPOS);
   };
 
@@ -28,20 +30,7 @@ export const RepoBranchesDrawer: FC = () => {
         repo: repoName,
       };
 
-      setBranches([]);
-      setIsLoading(true);
-      setIsDrawerVisible(true);
-
-      (async () => {
-        const response = await gitHubStore.getRepoBranches(repoParams);
-        if (response.success) {
-          setBranches(response.data);
-        } else {
-          setIsDrawerVisible(false);
-          navigate(ROUTES.REPOS);
-        }
-        setIsLoading(false);
-      })();
+      repoBranchesStore.getRepoBranches(repoParams);
     }
   }, [repoName]);
 
@@ -50,14 +39,17 @@ export const RepoBranchesDrawer: FC = () => {
       title="Repository branches"
       placement="right"
       onClose={handleDrawerClose}
-      visible={isDrawerVisible}
+      visible={!!repoName}
     >
       <NameWrapper>
-        Repository: <Name>{isLoading ? "Loading..." : repoName}</Name>
+        Repository:
+        <Name>
+          {repoBranchesStore.meta === Meta.LOADING ? "Loading..." : repoName}
+        </Name>
       </NameWrapper>
       <Title>Branches:</Title>
       <List>
-        {branches.map((branch) => (
+        {repoBranchesStore.branches.map((branch) => (
           <ListItem key={branch.name}>{branch.name}</ListItem>
         ))}
       </List>
@@ -107,3 +99,5 @@ const ListItem = styled.li`
     background: var(--green);
   }
 `;
+
+export default observer(RepoBranchesDrawer);

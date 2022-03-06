@@ -3,13 +3,12 @@ import qs from "qs";
 import { ApiResponse, HTTPMethod } from "shared/store/ApiStore";
 import RootStore from "shared/store/RootStore";
 import { UserRepoItemApi } from "store/models/github";
-import { IOrganizationRepoItem, IUserRepoBranch } from "types";
+import { IOrganizationRepoItem } from "types";
 import { ILocalStore } from "utils/userLocalStore";
 
 import {
   CreateUserRepoParams,
   GetOrganizationReposListParams,
-  GetRepoBranchesParams,
   IGitHubStore,
 } from "./types";
 
@@ -48,27 +47,6 @@ export default class GitHubStore implements IGitHubStore, ILocalStore {
         page: params.page,
       }),
     };
-  }
-
-  private getRepoBranchesRequestParams(params: GetRepoBranchesParams) {
-    return {
-      method: HTTPMethod.GET,
-      endpoint: `repos/${params.owner}/${params.repo}/branches`,
-      headers: {
-        accept: "application/vnd.github.v3+json",
-      },
-      data: qs.stringify({
-        per_page: params.per_page,
-        page: params.page,
-      }),
-    };
-  }
-
-  async getRepoBranches(
-    params: GetRepoBranchesParams
-  ): Promise<ApiResponse<IUserRepoBranch[]>> {
-    const requestParams = this.getRepoBranchesRequestParams(params);
-    return await this._apiStore.request(requestParams);
   }
 
   async createUserRepo(

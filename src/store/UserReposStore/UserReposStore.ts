@@ -24,30 +24,31 @@ import { ILocalStore } from "utils/userLocalStore";
 
 import { GetUserReposListParams } from "./types";
 
-type PrivateFields = "_userRepoList" | "_userRepoMeta";
+type PrivateFields = "_list" | "_meta";
 
 export default class UserReposStore implements UserReposStore, ILocalStore {
   private readonly _apiStore = RootStore.api;
-  private _userRepoList: CollectionModel<number, UserRepoItemModel> =
+  private _list: CollectionModel<number, UserRepoItemModel> =
     getInitialCollectionModal();
-  private _userRepoMeta: Meta = Meta.INITIAL;
+  private _meta: Meta = Meta.INITIAL;
 
   constructor() {
     makeObservable<UserReposStore, PrivateFields>(this, {
-      _userRepoList: observable.ref,
-      _userRepoMeta: observable,
-      userRepoList: computed,
-      userRepoMeta: computed,
+      _list: observable.ref,
+      _meta: observable,
+      list: computed,
+      meta: computed,
       getUserReposList: action,
+      destroy: action,
     });
   }
 
-  get userRepoList(): UserRepoItemModel[] {
-    return linearizeCollection(this._userRepoList);
+  get list(): UserRepoItemModel[] {
+    return linearizeCollection(this._list);
   }
 
-  get userRepoMeta(): Meta {
-    return this._userRepoMeta;
+  get meta(): Meta {
+    return this._meta;
   }
 
   private getUserReposRequestParams(params: GetUserReposListParams) {
@@ -68,8 +69,8 @@ export default class UserReposStore implements UserReposStore, ILocalStore {
   }
 
   async getUserReposList(params: GetUserReposListParams): Promise<void> {
-    this._userRepoMeta = Meta.LOADING;
-    this._userRepoList = getInitialCollectionModal();
+    this._meta = Meta.LOADING;
+    this._list = getInitialCollectionModal();
 
     const requestParams = this.getUserReposRequestParams(params);
     const response = await this._apiStore.request<UserRepoItemApi[]>(
@@ -79,28 +80,28 @@ export default class UserReposStore implements UserReposStore, ILocalStore {
     runInAction(() => {
       if (response.success) {
         try {
-          const userRepoList: UserRepoItemModel[] = [];
+          const list: UserRepoItemModel[] = [];
 
           for (const item of response.data) {
-            userRepoList.push(normalizeUserRepoItem(item));
+            list.push(normalizeUserRepoItem(item));
           }
 
-          this._userRepoList = normalizeCollection(
-            userRepoList,
-            (listItem) => listItem.id
-          );
+          this._list = normalizeCollection(list, (listItem) => listItem.id);
 
-          this._userRepoMeta = Meta.SUCCESS;
+          this._meta = Meta.SUCCESS;
         } catch (error) {
           console.error(error);
-          this._userRepoMeta = Meta.ERROR;
-          this._userRepoList = getInitialCollectionModal();
+          this._meta = Meta.ERROR;
+          this._list = getInitialCollectionModal();
         }
       } else {
-        this._userRepoMeta = Meta.ERROR;
+        this._meta = Meta.ERROR;
       }
     });
   }
 
-  destroy(): void {}
+  destroy(): void {
+    this._list = getInitialCollectionModal();
+    this._meta = Meta.INITIAL;
+  }
 }
