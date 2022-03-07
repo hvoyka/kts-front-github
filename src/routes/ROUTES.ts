@@ -1,6 +1,8 @@
 export const ROUTES = {
   ROOT: "/",
-  REPOS: "/repos",
-  REPO: (name?: string) => `/repos/${name}`,
-  CREATE_REPO: "/create-repo",
+  USER_REPOS: "/user-repos",
+  USER_REPO: (name?: string) => `/user-repos/${name}`,
+  ORG_REPOS: "/org-repos",
+  ORG_REPO: (name?: string) => `/org-repos/${name}`,
+  CREATE_USER_REPO: "/create-user-repo",
 };

@@ -1,6 +1,6 @@
 import React from "react";
 
-import { CreateRepo, Repos } from "pages";
+import { CreateRepo, OrgRepos, UserRepos } from "pages";
 import { Navigate, Route, Routes } from "react-router-dom";
 
 import { ROUTES } from "./ROUTES";
@@ -8,11 +8,14 @@ import { ROUTES } from "./ROUTES";
 export const Router = () => {
   return (
     <Routes>
-      <Route path={ROUTES.REPOS} element={<Repos />}>
-        <Route path=":repoName" element={<Repos />} />
+      <Route path={ROUTES.USER_REPOS} element={<UserRepos />}>
+        <Route path=":repoName" element={<UserRepos />} />
       </Route>
-      <Route path={ROUTES.CREATE_REPO} element={<CreateRepo />} />
-      <Route path="*" element={<Navigate to={ROUTES.REPOS} />} />
+      <Route path={ROUTES.ORG_REPOS} element={<OrgRepos />}>
+        <Route path=":repoName" element={<OrgRepos />} />
+      </Route>
+      <Route path={ROUTES.CREATE_USER_REPO} element={<CreateRepo />} />
+      <Route path="*" element={<Navigate to={ROUTES.USER_REPOS} />} />
     </Routes>
   );
 };

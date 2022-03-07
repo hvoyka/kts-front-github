@@ -25,7 +25,7 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
   );
 
   const handleDrawerClose = () => {
-    navigate(ROUTES.REPOS);
+    navigate(ROUTES.USER_REPOS);
   };
 
   useEffect(() => {

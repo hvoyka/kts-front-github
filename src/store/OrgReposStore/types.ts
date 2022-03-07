@@ -1,6 +1,4 @@
-import { ApiResponse } from "shared/store/ApiStore/types";
 import { ReposDirection, ReposSort, ReposTypes } from "store/types";
-import { IOrganizationRepoItem } from "types";
 
 export interface GetOrganizationReposListParams {
   org: string;
@@ -11,8 +9,8 @@ export interface GetOrganizationReposListParams {
   page?: number;
 }
 
-export interface IGitHubStore {
+export interface OrgReposStore {
   getOrganizationReposList(
     params: GetOrganizationReposListParams
-  ): Promise<ApiResponse<IOrganizationRepoItem[]>>;
+  ): Promise<void>;
 }

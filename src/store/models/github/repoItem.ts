@@ -1,6 +1,6 @@
 import { RepoOwnerApi, RepoOwnerModel, normalizeRepoOwner } from "./repoOwner";
 
-export type UserRepoItemApi = {
+export type RepoItemApi = {
   id: number;
   name: string;
   html_url: string;
@@ -9,7 +9,7 @@ export type UserRepoItemApi = {
   owner: RepoOwnerApi;
 };
 
-export type UserRepoItemModel = {
+export type RepoItemModel = {
   id: number;
   name: string;
   htmlUrl: string;
@@ -18,9 +18,7 @@ export type UserRepoItemModel = {
   owner: RepoOwnerModel;
 };
 
-export const normalizeUserRepoItem = (
-  from: UserRepoItemApi
-): UserRepoItemModel => ({
+export const normalizeRepoItem = (from: RepoItemApi): RepoItemModel => ({
   id: from.id,
   name: from.name,
   htmlUrl: from.html_url,

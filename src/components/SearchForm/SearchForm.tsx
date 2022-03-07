@@ -9,11 +9,13 @@ interface SearchFormProps {
   onSearchSubmit: (searchValue: string) => void;
   className?: string;
   isLoading?: boolean;
+  placeholder?: string;
 }
 
 export const SearchForm: FC<SearchFormProps> = ({
   className,
   isLoading,
+  placeholder,
   onSearchSubmit,
 }) => {
   const [searchValue, setSearchValue] = useState("");
@@ -28,7 +30,7 @@ export const SearchForm: FC<SearchFormProps> = ({
       <Input
         name="searchValue"
         id="searchValue"
-        placeholder="Введите имя владельца"
+        placeholder={placeholder}
         onChange={(value) => setSearchValue(value)}
         isLoading={isLoading}
         value={searchValue}

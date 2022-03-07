@@ -1,3 +1,3 @@
 export * from "./repoOwner";
-export * from "./userRepoItem";
+export * from "./repoItem";
 export * from "./repoBranch";

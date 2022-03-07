@@ -1,12 +1,12 @@
 import React, { FC } from "react";
 
-import { UserRepoItemModel } from "store/models/github";
+import { RepoItemModel } from "store/models/github";
 import styled from "styled-components";
 
 import { RepoTile } from "../RepoTile";
 
 interface RepoListProps {
-  items: UserRepoItemModel[];
+  items: RepoItemModel[];
   onClick: (id: number) => void;
 }
 

@@ -1,37 +1,29 @@
 import React, { FC, useCallback, useEffect, useState } from "react";
 
 import { Col, Row } from "antd";
+import { RepoBranchesDrawer, RepoList, RepoTile, SearchForm } from "components";
 import { USER_EMPTY_REPO_MOCK } from "constant";
 import { MainLayout } from "layouts";
 import { observer } from "mobx-react-lite";
 import { useNavigate } from "react-router-dom";
 import { ROUTES } from "routes/ROUTES";
-import { UserReposStore } from "store/UserReposStore";
+import { OrgReposStore } from "store/OrgReposStore";
 import styled from "styled-components";
 import { Meta, useLocalStore } from "utils";
 
-import {
-  RepoBranchesDrawer,
-  RepoList,
-  RepoTile,
-  SearchForm,
-} from "./components";
-
-const Repos: FC = () => {
-  const userReposStore = useLocalStore<UserReposStore>(
-    () => new UserReposStore()
-  );
+const OrgRepos: FC = () => {
+  const orgReposStore = useLocalStore<OrgReposStore>(() => new OrgReposStore());
   let navigate = useNavigate();
   const [ownerLogin, setOwnerLogin] = useState<string | undefined>("");
-  const isLoading = userReposStore.meta === Meta.LOADING;
+  const isLoading = orgReposStore.meta === Meta.LOADING;
 
   const handleTileClick = useCallback(
     (id: number) => {
-      const currentRepo = userReposStore.list.find((item) => item.id === id);
+      const currentRepo = orgReposStore.list.find((item) => item.id === id);
       setOwnerLogin(currentRepo?.owner?.login);
-      navigate(ROUTES.REPO(currentRepo?.name));
+      navigate(ROUTES.USER_REPO(currentRepo?.name));
     },
-    [userReposStore]
+    [orgReposStore]
   );
 
   const onSearchSubmit = (searchValue: string) => {
@@ -39,8 +31,8 @@ const Repos: FC = () => {
   };
 
   useEffect(() => {
-    userReposStore.getUserReposList({
-      username: ownerLogin || "hvoyka",
+    orgReposStore.getOrganizationReposList({
+      org: ownerLogin || "ktsstudio",
       direction: "desc",
     });
   }, [ownerLogin]);
@@ -51,6 +43,7 @@ const Repos: FC = () => {
         <Col>
           <Wrapper>
             <StyledSearchForm
+              placeholder="Введите имя пользователя"
               onSearchSubmit={onSearchSubmit}
               isLoading={isLoading}
             />
@@ -61,7 +54,7 @@ const Repos: FC = () => {
                 onClick={() => {}}
               />
             )}
-            <RepoList items={userReposStore.list} onClick={handleTileClick} />
+            <RepoList items={orgReposStore.list} onClick={handleTileClick} />
             <RepoBranchesDrawer ownerLogin={ownerLogin} />
           </Wrapper>
         </Col>
@@ -81,4 +74,4 @@ const StyledSearchForm = styled(SearchForm)`
   margin-bottom: 20px;
 `;
 
-export default observer(Repos);
+export default observer(OrgRepos);

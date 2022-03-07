@@ -4,11 +4,11 @@ import { Skeleton } from "antd";
 import { Avatar } from "components";
 import { StarIcon } from "components/icons";
 import dayjs from "dayjs";
-import { UserRepoItemModel } from "store/models/github";
+import { RepoItemModel } from "store/models/github";
 import styled from "styled-components";
 
 type RepoTileProps = {
-  item: UserRepoItemModel;
+  item: RepoItemModel;
   isLoading?: boolean;
   onClick: (id: number) => void;
 };
