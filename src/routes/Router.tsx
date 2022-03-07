@@ -15,7 +15,7 @@ export const Router = () => {
         <Route path=":repoName" element={<OrgRepos />} />
       </Route>
       <Route path={ROUTES.CREATE_USER_REPO} element={<CreateUserRepo />} />
-      <Route path="*" element={<Navigate to={ROUTES.USER_REPOS} />} />
+      <Route path="*" element={<Navigate to={ROUTES.ORG_REPOS} />} />
     </Routes>
   );
 };

@@ -58,16 +58,16 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
           <ListItem key={branch.name}>{branch.name}</ListItem>
         ))}
       </List>
+      <Title>Info:</Title>
       {isInfoLoading ? (
         "Info loading..."
       ) : (
         <Info>
           <ul>
-            <InfoItem>{repoInfo?.name}</InfoItem>
-            <InfoItem>{repoInfo?.owner}</InfoItem>
-            <InfoItem>{repoInfo?.visibility}</InfoItem>
-            <InfoItem>{repoInfo?.owner}</InfoItem>
-            <InfoItem>{repoInfo?.updatedAt}</InfoItem>
+            <InfoItem>Name: {repoInfo?.name}</InfoItem>
+            <InfoItem>Owner: {repoInfo?.owner?.login}</InfoItem>
+            <InfoItem>Visibility: {repoInfo?.visibility}</InfoItem>
+            <InfoItem>Updated: {repoInfo?.updatedAt.toString()}</InfoItem>
           </ul>
         </Info>
       )}
@@ -87,8 +87,8 @@ const Name = styled.span`
 
 const Title = styled.h3`
   margin-bottom: 20px;
-  font-size: 24px;
-  line-height: 20px;
+  font-size: 20px;
+  line-height: 18px;
 `;
 
 const List = styled.ul`

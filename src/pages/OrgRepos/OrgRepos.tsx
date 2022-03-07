@@ -44,7 +44,7 @@ const OrgRepos: FC = () => {
         <Col>
           <Wrapper>
             <StyledSearchForm
-              placeholder="Введите имя пользователя"
+              placeholder="Введите имя организации"
               onSearchSubmit={onSearchSubmit}
               isLoading={isLoading}
             />
