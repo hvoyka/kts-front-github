@@ -1,11 +1,11 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect } from "react";
 
 import { Col, Row } from "antd";
 import { RepoBranchesDrawer, RepoList, RepoTile, SearchForm } from "components";
 import { USER_EMPTY_REPO_MOCK } from "constant";
 import { MainLayout } from "layouts";
 import { observer } from "mobx-react-lite";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "routes/ROUTES";
 import { UserReposStore } from "store/UserReposStore";
 import styled from "styled-components";
@@ -16,29 +16,33 @@ const UserRepos: FC = () => {
     () => new UserReposStore()
   );
   let navigate = useNavigate();
-  const [ownerLogin, setOwnerLogin] = useState<string | undefined>("");
+  let { user } = useParams();
+
   const isLoading = userReposStore.meta === Meta.LOADING;
   const isError = userReposStore.meta === Meta.ERROR;
 
   const handleTileClick = useCallback(
     (id: number) => {
       const currentRepo = userReposStore.list.find((item) => item.id === id);
-      setOwnerLogin(currentRepo?.owner?.login);
-      navigate(ROUTES.USER_REPO(currentRepo?.name));
+      if (currentRepo) {
+        navigate(ROUTES.USER_REPO(currentRepo.owner.login, currentRepo.name));
+      }
     },
-    [userReposStore]
+    [userReposStore, navigate]
   );
 
   const onSearchSubmit = (searchValue: string) => {
-    setOwnerLogin(searchValue);
+    navigate(ROUTES.USER_REPO(searchValue));
   };
 
   useEffect(() => {
-    userReposStore.getUserReposList({
-      username: ownerLogin || "hvoyka",
-      direction: "desc",
-    });
-  }, [ownerLogin]);
+    if (user) {
+      userReposStore.getUserReposList({
+        username: user,
+        direction: "desc",
+      });
+    }
+  }, [userReposStore, user]);
 
   return (
     <MainLayout>
@@ -62,8 +66,9 @@ const UserRepos: FC = () => {
 
             <RepoList items={userReposStore.list} onClick={handleTileClick} />
             <RepoBranchesDrawer
-              ownerLogin={ownerLogin}
-              onClose={() => navigate(ROUTES.USER_REPOS)}
+              onClose={() =>
+                navigate(user ? ROUTES.USER_REPO(user) : ROUTES.USER_REPOS)
+              }
             />
           </Wrapper>
         </Col>

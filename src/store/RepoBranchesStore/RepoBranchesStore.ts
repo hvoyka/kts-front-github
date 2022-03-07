@@ -54,10 +54,7 @@ export default class RepoBranchesStore
       headers: {
         accept: "application/vnd.github.v3+json",
       },
-      data: qs.stringify({
-        per_page: params.per_page,
-        page: params.page,
-      }),
+      data: {},
     };
   }
 

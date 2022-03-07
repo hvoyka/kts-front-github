@@ -1,11 +1,11 @@
-import React, { FC, useCallback, useEffect, useState } from "react";
+import React, { FC, useCallback, useEffect } from "react";
 
 import { Col, Row } from "antd";
 import { RepoBranchesDrawer, RepoList, RepoTile, SearchForm } from "components";
 import { USER_EMPTY_REPO_MOCK } from "constant";
 import { MainLayout } from "layouts";
 import { observer } from "mobx-react-lite";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "routes/ROUTES";
 import { OrgReposStore } from "store/OrgReposStore";
 import styled from "styled-components";
@@ -14,29 +14,32 @@ import { Meta, useLocalStore } from "utils";
 const OrgRepos: FC = () => {
   const orgReposStore = useLocalStore<OrgReposStore>(() => new OrgReposStore());
   let navigate = useNavigate();
-  const [ownerLogin, setOwnerLogin] = useState<string | undefined>("");
+  let { org } = useParams();
   const isLoading = orgReposStore.meta === Meta.LOADING;
   const isError = orgReposStore.meta === Meta.ERROR;
 
   const handleTileClick = useCallback(
     (id: number) => {
       const currentRepo = orgReposStore.list.find((item) => item.id === id);
-      setOwnerLogin(currentRepo?.owner?.login);
-      navigate(ROUTES.ORG_REPO(currentRepo?.name));
+      if (currentRepo) {
+        navigate(ROUTES.ORG_REPO(currentRepo.owner.login, currentRepo?.name));
+      }
     },
-    [orgReposStore]
+    [orgReposStore, navigate]
   );
 
   const onSearchSubmit = (searchValue: string) => {
-    setOwnerLogin(searchValue);
+    navigate(ROUTES.ORG_REPO(searchValue));
   };
 
   useEffect(() => {
-    orgReposStore.getOrganizationReposList({
-      org: ownerLogin || "ktsstudio",
-      direction: "desc",
-    });
-  }, [ownerLogin]);
+    if (org) {
+      orgReposStore.getOrganizationReposList({
+        org: org,
+        direction: "desc",
+      });
+    }
+  }, [org, orgReposStore]);
 
   return (
     <MainLayout>
@@ -59,9 +62,11 @@ const OrgRepos: FC = () => {
             {isError && <ErrorText>Something went wrong</ErrorText>}
 
             <RepoList items={orgReposStore.list} onClick={handleTileClick} />
+
             <RepoBranchesDrawer
-              ownerLogin={ownerLogin}
-              onClose={() => navigate(ROUTES.ORG_REPOS)}
+              onClose={() =>
+                navigate(org ? ROUTES.ORG_REPO(org) : ROUTES.ORG_REPOS)
+              }
             />
           </Wrapper>
         </Col>

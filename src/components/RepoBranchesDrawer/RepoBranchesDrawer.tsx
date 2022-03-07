@@ -11,15 +11,13 @@ import { RepoInfoStore } from "store/RepoInfoStore";
 import styled from "styled-components";
 import { Meta, useLocalStore } from "utils";
 interface RepoBranchesDrawerProps {
-  ownerLogin?: string;
   onClose: () => void;
 }
 
 export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
-  ownerLogin,
   onClose,
 }) => {
-  let { repoName } = useParams();
+  let { user, repo } = useParams();
 
   const repoBranchesStore = useLocalStore<RepoBranchesStore>(
     () => new RepoBranchesStore()
@@ -30,27 +28,27 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
   const isInfoLoading = repoBranchesStore.meta === Meta.LOADING;
 
   useEffect(() => {
-    if (repoName && ownerLogin) {
+    if (user && repo) {
       const repoParams: GetRepoBranchesParams = {
-        owner: ownerLogin,
-        repo: repoName,
+        owner: user,
+        repo: repo,
       };
 
       repoBranchesStore.getRepoBranches(repoParams);
       repoInfoStore.getRepoInfo(repoParams);
     }
-  }, [repoName, ownerLogin]);
+  }, [repo, user, repoBranchesStore, repoInfoStore]);
 
   return (
     <Drawer
       title="Repository branches"
       placement="right"
       onClose={onClose}
-      visible={!!repoName}
+      visible={!!repo}
     >
       <NameWrapper>
         Repository:
-        <Name>{isBranchesLoading ? "Loading..." : repoName}</Name>
+        <Name>{isBranchesLoading ? "Loading..." : repo}</Name>
       </NameWrapper>
       <Title>Branches:</Title>
       <List>
