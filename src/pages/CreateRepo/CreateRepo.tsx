@@ -5,7 +5,7 @@ import { MainLayout } from "layouts";
 import { observer } from "mobx-react-lite";
 import { CreateUserRepoParams, UserReposStore } from "store/UserReposStore";
 import styled from "styled-components";
-import { useLocalStore } from "utils";
+import { Meta, useLocalStore } from "utils";
 
 const { Title } = Typography;
 
@@ -14,7 +14,7 @@ const CreateRepo: FC = () => {
   const userReposStore = useLocalStore<UserReposStore>(
     () => new UserReposStore()
   );
-
+  const isError = userReposStore.meta === Meta.ERROR;
   const repoParams: CreateUserRepoParams = {
     name: repoName,
     private: true,
@@ -32,7 +32,7 @@ const CreateRepo: FC = () => {
       <Row>
         <Col>
           <FormWrapper>
-            <Title>Create repository</Title>
+            <Title>Create user repository</Title>
             <form onSubmit={handleCreateRepository}>
               <StyledInput
                 type="text"
@@ -40,7 +40,8 @@ const CreateRepo: FC = () => {
                 onChange={(event) => setRepoName(event.target.value)}
                 value={repoName}
               />
-              <Button>Create repository</Button>
+              {isError && <ErrorText>Something went wrong</ErrorText>}
+              <Button htmlType="submit">Create repository</Button>
             </form>
           </FormWrapper>
         </Col>
@@ -51,6 +52,10 @@ const CreateRepo: FC = () => {
 
 const FormWrapper = styled.div`
   padding: 20px;
+`;
+
+const ErrorText = styled.div`
+  color: var(--red1);
 `;
 
 const StyledInput = styled(Input)`

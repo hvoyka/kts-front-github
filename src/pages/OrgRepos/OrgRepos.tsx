@@ -21,7 +21,7 @@ const OrgRepos: FC = () => {
     (id: number) => {
       const currentRepo = orgReposStore.list.find((item) => item.id === id);
       setOwnerLogin(currentRepo?.owner?.login);
-      navigate(ROUTES.USER_REPO(currentRepo?.name));
+      navigate(ROUTES.ORG_REPO(currentRepo?.name));
     },
     [orgReposStore]
   );
@@ -55,7 +55,10 @@ const OrgRepos: FC = () => {
               />
             )}
             <RepoList items={orgReposStore.list} onClick={handleTileClick} />
-            <RepoBranchesDrawer ownerLogin={ownerLogin} />
+            <RepoBranchesDrawer
+              ownerLogin={ownerLogin}
+              onClose={() => navigate(ROUTES.ORG_REPOS)}
+            />
           </Wrapper>
         </Col>
       </Row>

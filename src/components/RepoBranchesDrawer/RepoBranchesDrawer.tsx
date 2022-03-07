@@ -2,8 +2,7 @@ import React, { FC, useEffect } from "react";
 
 import { Drawer } from "antd";
 import { observer } from "mobx-react-lite";
-import { useNavigate, useParams } from "react-router-dom";
-import { ROUTES } from "routes/ROUTES";
+import { useParams } from "react-router-dom";
 import {
   GetRepoBranchesParams,
   RepoBranchesStore,
@@ -12,21 +11,18 @@ import styled from "styled-components";
 import { Meta, useLocalStore } from "utils";
 interface RepoBranchesDrawerProps {
   ownerLogin?: string;
+  onClose: () => void;
 }
 
 export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
   ownerLogin,
+  onClose,
 }) => {
   let { repoName } = useParams();
-  let navigate = useNavigate();
 
   const repoBranchesStore = useLocalStore<RepoBranchesStore>(
     () => new RepoBranchesStore()
   );
-
-  const handleDrawerClose = () => {
-    navigate(ROUTES.USER_REPOS);
-  };
 
   useEffect(() => {
     if (repoName && ownerLogin) {
@@ -43,7 +39,7 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
     <Drawer
       title="Repository branches"
       placement="right"
-      onClose={handleDrawerClose}
+      onClose={onClose}
       visible={!!repoName}
     >
       <NameWrapper>

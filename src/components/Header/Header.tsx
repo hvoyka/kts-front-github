@@ -16,7 +16,7 @@ export const Header: FC = () => {
         </Menu.Item>
 
         <Menu.Item key="create">
-          <Link to={ROUTES.CREATE_USER_REPO}>Create repo</Link>
+          <Link to={ROUTES.CREATE_USER_REPO}>Create user repo</Link>
         </Menu.Item>
       </Menu>
     </Root>
