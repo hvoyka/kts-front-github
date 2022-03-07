@@ -9,6 +9,13 @@ export interface GetUserReposListParams {
   page?: number;
 }
 
+export interface CreateUserRepoParams {
+  name: string;
+  private?: boolean;
+  description?: string;
+}
+
 export interface UserReposStore {
   getUserReposList(params: GetUserReposListParams): Promise<void>;
+  createUserRepo(params: CreateUserRepoParams): Promise<void>;
 }

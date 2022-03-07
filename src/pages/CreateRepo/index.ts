@@ -1,1 +1,1 @@
-export { CreateRepo } from "./CreateRepo";
+export { default as CreateRepo } from "./CreateRepo";

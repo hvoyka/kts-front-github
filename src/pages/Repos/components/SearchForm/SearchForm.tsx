@@ -18,27 +18,27 @@ export const SearchForm: FC<SearchFormProps> = ({
 }) => {
   const [searchValue, setSearchValue] = useState("");
 
-  const handleSearchSubmit = () => {
+  const handleSearchSubmit = (event: React.FormEvent) => {
+    event.preventDefault();
     onSearchSubmit(searchValue);
-    setSearchValue("");
   };
 
   return (
-    <Root className={className}>
+    <Root className={className} onSubmit={handleSearchSubmit}>
       <Input
         name="searchValue"
         id="searchValue"
-        placeholder="Введите название организации"
+        placeholder="Введите имя владельца"
         onChange={(value) => setSearchValue(value)}
         isLoading={isLoading}
         value={searchValue}
       />
-      <SearchButton onClick={handleSearchSubmit} isLoading={isLoading} />
+      <SearchButton isLoading={isLoading} />
     </Root>
   );
 };
 
-const Root = styled.div`
+const Root = styled.form`
   display: grid;
   grid-template-columns: 295px 50px;
   grid-template-rows: 1fr;

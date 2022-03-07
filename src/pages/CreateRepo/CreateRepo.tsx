@@ -2,15 +2,18 @@ import React, { FC, FormEvent, useState } from "react";
 
 import { Button, Col, Input, Row, Typography } from "antd";
 import { MainLayout } from "layouts";
-import { useLocalStore } from "mobx-react-lite";
-import { CreateUserRepoParams, GitHubStore } from "store/GitHubStore";
+import { observer } from "mobx-react-lite";
+import { CreateUserRepoParams, UserReposStore } from "store/UserReposStore";
 import styled from "styled-components";
+import { useLocalStore } from "utils";
 
 const { Title } = Typography;
 
-export const CreateRepo: FC = () => {
+const CreateRepo: FC = () => {
   const [repoName, setRepoName] = useState("");
-  const gitHubStore = useLocalStore<GitHubStore>(() => new GitHubStore());
+  const userReposStore = useLocalStore<UserReposStore>(
+    () => new UserReposStore()
+  );
 
   const repoParams: CreateUserRepoParams = {
     name: repoName,
@@ -20,9 +23,8 @@ export const CreateRepo: FC = () => {
   const handleCreateRepository = (event: FormEvent) => {
     event.preventDefault();
 
-    gitHubStore.createUserRepo(repoParams).then(() => {
-      setRepoName("");
-    });
+    userReposStore.createUserRepo(repoParams);
+    setRepoName("");
   };
 
   return (
@@ -54,3 +56,5 @@ const FormWrapper = styled.div`
 const StyledInput = styled(Input)`
   margin-bottom: 20px;
 `;
+
+export default observer(CreateRepo);

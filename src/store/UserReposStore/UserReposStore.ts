@@ -1,3 +1,4 @@
+import { GITHUB_ACCESS_TOKEN } from "constant";
 import {
   action,
   computed,
@@ -22,7 +23,7 @@ import {
 import { Meta } from "utils";
 import { ILocalStore } from "utils/userLocalStore";
 
-import { GetUserReposListParams } from "./types";
+import { CreateUserRepoParams, GetUserReposListParams } from "./types";
 
 type PrivateFields = "_list" | "_meta";
 
@@ -39,6 +40,7 @@ export default class UserReposStore implements UserReposStore, ILocalStore {
       list: computed,
       meta: computed,
       getUserReposList: action,
+      createUserRepo: action,
       destroy: action,
     });
   }
@@ -68,6 +70,23 @@ export default class UserReposStore implements UserReposStore, ILocalStore {
     };
   }
 
+  private createUserRepoRequestParams(params: CreateUserRepoParams) {
+    return {
+      method: HTTPMethod.POST,
+      endpoint: `user/repos`,
+      headers: {
+        accept: "application/vnd.github.v3+json",
+        Authorization: `token ${GITHUB_ACCESS_TOKEN}`,
+      },
+
+      data: {
+        name: params.name,
+        description: params.description,
+        private: params.private,
+      },
+    };
+  }
+
   async getUserReposList(params: GetUserReposListParams): Promise<void> {
     this._meta = Meta.LOADING;
     this._list = getInitialCollectionModal();
@@ -93,6 +112,31 @@ export default class UserReposStore implements UserReposStore, ILocalStore {
           console.error(error);
           this._meta = Meta.ERROR;
           this._list = getInitialCollectionModal();
+        }
+      } else {
+        this._meta = Meta.ERROR;
+      }
+    });
+  }
+
+  async createUserRepo(params: CreateUserRepoParams): Promise<void> {
+    const requestParams = this.createUserRepoRequestParams(params);
+    const response = await this._apiStore.request<UserRepoItemApi>(
+      requestParams
+    );
+
+    runInAction(() => {
+      if (response.success) {
+        try {
+          const newItem = response.data;
+          const id = newItem.id;
+
+          this._list.order.push(id);
+          this._list.entities[id] = normalizeUserRepoItem(newItem);
+          this._meta = Meta.SUCCESS;
+        } catch (error) {
+          console.error(error);
+          this._meta = Meta.ERROR;
         }
       } else {
         this._meta = Meta.ERROR;
