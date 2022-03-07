@@ -9,7 +9,7 @@ import { Meta, useLocalStore } from "utils";
 
 const { Title } = Typography;
 
-const CreateRepo: FC = () => {
+const CreateUserRepo: FC = () => {
   const [repoName, setRepoName] = useState("");
   const userReposStore = useLocalStore<UserReposStore>(
     () => new UserReposStore()
@@ -20,7 +20,7 @@ const CreateRepo: FC = () => {
     private: true,
   };
 
-  const handleCreateRepository = (event: FormEvent) => {
+  const handleCreateUserRepository = (event: FormEvent) => {
     event.preventDefault();
 
     userReposStore.createUserRepo(repoParams);
@@ -33,7 +33,7 @@ const CreateRepo: FC = () => {
         <Col>
           <FormWrapper>
             <Title>Create user repository</Title>
-            <form onSubmit={handleCreateRepository}>
+            <form onSubmit={handleCreateUserRepository}>
               <StyledInput
                 type="text"
                 placeholder="Repository name"
@@ -62,4 +62,4 @@ const StyledInput = styled(Input)`
   margin-bottom: 20px;
 `;
 
-export default observer(CreateRepo);
+export default observer(CreateUserRepo);

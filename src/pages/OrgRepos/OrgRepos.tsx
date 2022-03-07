@@ -16,6 +16,7 @@ const OrgRepos: FC = () => {
   let navigate = useNavigate();
   const [ownerLogin, setOwnerLogin] = useState<string | undefined>("");
   const isLoading = orgReposStore.meta === Meta.LOADING;
+  const isError = orgReposStore.meta === Meta.ERROR;
 
   const handleTileClick = useCallback(
     (id: number) => {
@@ -47,6 +48,7 @@ const OrgRepos: FC = () => {
               onSearchSubmit={onSearchSubmit}
               isLoading={isLoading}
             />
+
             {isLoading && (
               <RepoTile
                 item={USER_EMPTY_REPO_MOCK}
@@ -54,6 +56,8 @@ const OrgRepos: FC = () => {
                 onClick={() => {}}
               />
             )}
+            {isError && <ErrorText>Something went wrong</ErrorText>}
+
             <RepoList items={orgReposStore.list} onClick={handleTileClick} />
             <RepoBranchesDrawer
               ownerLogin={ownerLogin}
@@ -75,6 +79,9 @@ const Wrapper = styled.div`
 
 const StyledSearchForm = styled(SearchForm)`
   margin-bottom: 20px;
+`;
+const ErrorText = styled.div`
+  color: var(--red1);
 `;
 
 export default observer(OrgRepos);

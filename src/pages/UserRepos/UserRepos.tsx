@@ -50,6 +50,7 @@ const UserRepos: FC = () => {
               onSearchSubmit={onSearchSubmit}
               isLoading={isLoading}
             />
+
             {isLoading && (
               <RepoTile
                 item={USER_EMPTY_REPO_MOCK}
@@ -58,6 +59,7 @@ const UserRepos: FC = () => {
               />
             )}
             {isError && <ErrorText>Something went wrong</ErrorText>}
+
             <RepoList items={userReposStore.list} onClick={handleTileClick} />
             <RepoBranchesDrawer
               ownerLogin={ownerLogin}
