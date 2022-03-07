@@ -5,6 +5,6 @@ export interface GetRepoBranchesParams {
   page?: number;
 }
 
-export interface RepoBranchesStore {
+export interface IRepoBranchesStore {
   getRepoBranches(params: GetRepoBranchesParams): Promise<void>;
 }

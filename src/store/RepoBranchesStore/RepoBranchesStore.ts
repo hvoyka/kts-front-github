@@ -16,15 +16,16 @@ import {
 import { Meta } from "utils";
 import { ILocalStore } from "utils/userLocalStore";
 
-import { GetRepoBranchesParams } from "./types";
+import { GetRepoBranchesParams, IRepoBranchesStore } from "./types";
 
 type PrivateFields = "_branches" | "_meta";
 
 export default class RepoBranchesStore
-  implements RepoBranchesStore, ILocalStore
+  implements IRepoBranchesStore, ILocalStore
 {
   private readonly _apiStore = RootStore.api;
   private _branches: RepoBranchModel[] = [];
+
   private _meta: Meta = Meta.INITIAL;
 
   constructor() {

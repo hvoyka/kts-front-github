@@ -7,6 +7,7 @@ import {
   GetRepoBranchesParams,
   RepoBranchesStore,
 } from "store/RepoBranchesStore";
+import { RepoInfoStore } from "store/RepoInfoStore";
 import styled from "styled-components";
 import { Meta, useLocalStore } from "utils";
 interface RepoBranchesDrawerProps {
@@ -23,6 +24,10 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
   const repoBranchesStore = useLocalStore<RepoBranchesStore>(
     () => new RepoBranchesStore()
   );
+  const repoInfoStore = useLocalStore<RepoInfoStore>(() => new RepoInfoStore());
+  const repoInfo = repoInfoStore.info;
+  const isBranchesLoading = repoBranchesStore.meta === Meta.LOADING;
+  const isInfoLoading = repoBranchesStore.meta === Meta.LOADING;
 
   useEffect(() => {
     if (repoName && ownerLogin) {
@@ -32,6 +37,7 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
       };
 
       repoBranchesStore.getRepoBranches(repoParams);
+      repoInfoStore.getRepoInfo(repoParams);
     }
   }, [repoName, ownerLogin]);
 
@@ -44,9 +50,7 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
     >
       <NameWrapper>
         Repository:
-        <Name>
-          {repoBranchesStore.meta === Meta.LOADING ? "Loading..." : repoName}
-        </Name>
+        <Name>{isBranchesLoading ? "Loading..." : repoName}</Name>
       </NameWrapper>
       <Title>Branches:</Title>
       <List>
@@ -54,6 +58,19 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
           <ListItem key={branch.name}>{branch.name}</ListItem>
         ))}
       </List>
+      {isInfoLoading ? (
+        "Info loading..."
+      ) : (
+        <Info>
+          <ul>
+            <InfoItem>{repoInfo?.name}</InfoItem>
+            <InfoItem>{repoInfo?.owner}</InfoItem>
+            <InfoItem>{repoInfo?.visibility}</InfoItem>
+            <InfoItem>{repoInfo?.owner}</InfoItem>
+            <InfoItem>{repoInfo?.updatedAt}</InfoItem>
+          </ul>
+        </Info>
+      )}
     </Drawer>
   );
 };
@@ -99,6 +116,15 @@ const ListItem = styled.li`
     border-radius: 50%;
     background: var(--green);
   }
+`;
+
+const Info = styled.div`
+  border: 1px solid var(--gray1);
+  border-radius: 10px;
+  padding: 10px;
+`;
+const InfoItem = styled.li`
+  margin-bottom: 15px;
 `;
 
 export default observer(RepoBranchesDrawer);
