@@ -7,7 +7,7 @@ import { RepoTile } from "../RepoTile";
 
 interface RepoListProps {
   items: RepoItemModel[];
-  onClick: (id: number) => void;
+  onClick: (name: string) => void;
 }
 
 const RepoList: FC<RepoListProps> = ({ items, onClick }) => {

@@ -22,13 +22,12 @@ const UserRepos: FC = () => {
   const isError = userReposStore.meta === Meta.ERROR;
 
   const handleTileClick = useCallback(
-    (id: number) => {
-      const currentRepo = userReposStore.list.find((item) => item.id === id);
-      if (currentRepo) {
-        navigate(ROUTES.USER_REPO(currentRepo.owner.login, currentRepo.name));
+    (name: string) => {
+      if (user && name) {
+        navigate(ROUTES.USER_REPO(user, name));
       }
     },
-    [userReposStore, navigate]
+    [user, navigate]
   );
 
   const onSearchSubmit = (searchValue: string) => {
@@ -42,7 +41,7 @@ const UserRepos: FC = () => {
         direction: "desc",
       });
     }
-  }, [userReposStore, user]);
+  }, [user, userReposStore]);
 
   return (
     <MainLayout>

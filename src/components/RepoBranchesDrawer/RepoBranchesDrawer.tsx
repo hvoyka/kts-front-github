@@ -17,7 +17,7 @@ interface RepoBranchesDrawerProps {
 export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
   onClose,
 }) => {
-  let { user, repo } = useParams();
+  let { user, org, repo } = useParams();
 
   const repoBranchesStore = useLocalStore<RepoBranchesStore>(
     () => new RepoBranchesStore()
@@ -28,16 +28,16 @@ export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
   const isInfoLoading = repoBranchesStore.meta === Meta.LOADING;
 
   useEffect(() => {
-    if (user && repo) {
+    if (repo && (user || org)) {
       const repoParams: GetRepoBranchesParams = {
-        owner: user,
+        owner: user || org || "",
         repo: repo,
       };
 
       repoBranchesStore.getRepoBranches(repoParams);
       repoInfoStore.getRepoInfo(repoParams);
     }
-  }, [repo, user, repoBranchesStore, repoInfoStore]);
+  }, [repo, user, org, repoBranchesStore, repoInfoStore]);
 
   return (
     <Drawer

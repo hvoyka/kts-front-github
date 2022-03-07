@@ -10,11 +10,11 @@ import styled from "styled-components";
 type RepoTileProps = {
   item: RepoItemModel;
   isLoading?: boolean;
-  onClick: (id: number) => void;
+  onClick: (name: string) => void;
 };
 
 export const RepoTile: FC<RepoTileProps> = ({ item, isLoading, onClick }) => {
-  const { id, name, owner, htmlUrl, stargazersCount, updatedAt } = item || {};
+  const { name, owner, htmlUrl, stargazersCount, updatedAt } = item || {};
 
   const updateDate = dayjs(updatedAt).format("D MMM");
   const repoNameFirstLetter = name[0]?.toUpperCase();
@@ -22,8 +22,8 @@ export const RepoTile: FC<RepoTileProps> = ({ item, isLoading, onClick }) => {
   const handleClickOnCard = (
     event: React.MouseEvent<HTMLDivElement, MouseEvent>
   ) => {
-    if (id && event.target instanceof HTMLDivElement) {
-      onClick(id);
+    if (name && event.target instanceof HTMLDivElement) {
+      onClick(name);
     }
   };
 

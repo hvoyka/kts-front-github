@@ -50,7 +50,7 @@ export default class RepoInfoStore implements IRepoInfoStore, ILocalStore {
       headers: {
         accept: "application/vnd.github.v3+json",
       },
-      data: {},
+      data: "",
     };
   }
 

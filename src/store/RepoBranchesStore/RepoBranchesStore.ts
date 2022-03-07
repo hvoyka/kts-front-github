@@ -54,7 +54,7 @@ export default class RepoBranchesStore
       headers: {
         accept: "application/vnd.github.v3+json",
       },
-      data: {},
+      data: "",
     };
   }
 

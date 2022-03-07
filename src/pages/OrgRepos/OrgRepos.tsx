@@ -19,13 +19,12 @@ const OrgRepos: FC = () => {
   const isError = orgReposStore.meta === Meta.ERROR;
 
   const handleTileClick = useCallback(
-    (id: number) => {
-      const currentRepo = orgReposStore.list.find((item) => item.id === id);
-      if (currentRepo) {
-        navigate(ROUTES.ORG_REPO(currentRepo.owner.login, currentRepo?.name));
+    (name: string) => {
+      if (org && name) {
+        navigate(ROUTES.ORG_REPO(org, name));
       }
     },
-    [orgReposStore, navigate]
+    [org, navigate]
   );
 
   const onSearchSubmit = (searchValue: string) => {
