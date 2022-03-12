@@ -17,7 +17,7 @@ interface RepoBranchesDrawerProps {
 export const RepoBranchesDrawer: FC<RepoBranchesDrawerProps> = ({
   onClose,
 }) => {
-  let { user, org, repo } = useParams();
+  const { user, org, repo } = useParams();
 
   const repoBranchesStore = useLocalStore<RepoBranchesStore>(
     () => new RepoBranchesStore()

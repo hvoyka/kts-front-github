@@ -1,2 +1,2 @@
 export * from "./userLocalStore";
-export { Meta } from "./meta";
+export { Meta, SortType } from "./types";

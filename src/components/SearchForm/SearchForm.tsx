@@ -1,4 +1,4 @@
-import React, { FC, useState } from "react";
+import React, { FC, useCallback, useState } from "react";
 
 import { Input } from "components";
 import styled from "styled-components";
@@ -20,10 +20,13 @@ export const SearchForm: FC<SearchFormProps> = ({
 }) => {
   const [searchValue, setSearchValue] = useState("");
 
-  const handleSearchSubmit = (event: React.FormEvent) => {
-    event.preventDefault();
-    onSearchSubmit(searchValue);
-  };
+  const handleSearchSubmit = useCallback(
+    (event: React.FormEvent) => {
+      event.preventDefault();
+      onSearchSubmit(searchValue);
+    },
+    [onSearchSubmit, searchValue]
+  );
 
   return (
     <Root className={className} onSubmit={handleSearchSubmit}>

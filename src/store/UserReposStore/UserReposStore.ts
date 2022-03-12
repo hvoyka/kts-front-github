@@ -60,13 +60,7 @@ export default class UserReposStore implements UserReposStore, ILocalStore {
       headers: {
         accept: "application/vnd.github.v3+json",
       },
-      data: qs.stringify({
-        type: params.type,
-        sort: params.sort,
-        direction: params.direction,
-        per_page: params.per_page,
-        page: params.page,
-      }),
+      data: qs.stringify({ ...params }),
     };
   }
 
@@ -79,15 +73,13 @@ export default class UserReposStore implements UserReposStore, ILocalStore {
         Authorization: `token ${GITHUB_ACCESS_TOKEN}`,
       },
 
-      data: {
-        name: params.name,
-        description: params.description,
-        private: params.private,
-      },
+      data: { ...params },
     };
   }
 
   async getUserReposList(params: GetUserReposListParams): Promise<void> {
+    if (this._meta === Meta.LOADING) return;
+
     this._meta = Meta.LOADING;
     this._list = getInitialCollectionModal();
 
@@ -99,15 +91,12 @@ export default class UserReposStore implements UserReposStore, ILocalStore {
         try {
           const list: RepoItemModel[] = [];
 
-          for (const item of response.data) {
-            list.push(normalizeRepoItem(item));
-          }
+          response.data.forEach((item) => list.push(normalizeRepoItem(item)));
 
           this._list = normalizeCollection(list, (listItem) => listItem.id);
 
           this._meta = Meta.SUCCESS;
         } catch (error) {
-          console.error(error);
           this._meta = Meta.ERROR;
           this._list = getInitialCollectionModal();
         }
@@ -118,20 +107,20 @@ export default class UserReposStore implements UserReposStore, ILocalStore {
   }
 
   async createUserRepo(params: CreateUserRepoParams): Promise<void> {
+    if (this._meta === Meta.LOADING) return;
+
     const requestParams = this.createUserRepoRequestParams(params);
     const response = await this._apiStore.request<RepoItemApi>(requestParams);
 
     runInAction(() => {
       if (response.success) {
         try {
-          const newItem = response.data;
-          const id = newItem.id;
-
-          this._list.order.push(id);
-          this._list.entities[id] = normalizeRepoItem(newItem);
+          this._list.order.push(response.data.id);
+          this._list.entities[response.data.id] = normalizeRepoItem(
+            response.data
+          );
           this._meta = Meta.SUCCESS;
         } catch (error) {
-          console.error(error);
           this._meta = Meta.ERROR;
         }
       } else {

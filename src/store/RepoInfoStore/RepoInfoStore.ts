@@ -55,7 +55,8 @@ export default class RepoInfoStore implements IRepoInfoStore, ILocalStore {
   }
 
   async getRepoInfo(params: GetRepoInfoParams): Promise<void> {
-    this._info = undefined;
+    if (this._meta === Meta.LOADING) return;
+
     const requestParams = this.getRepoInfoRequestParams(params);
     const response = await this._apiStore.request<RepoInfoApi>(requestParams);
 

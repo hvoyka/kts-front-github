@@ -9,14 +9,14 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "routes/ROUTES";
 import { UserReposStore } from "store/UserReposStore";
 import styled from "styled-components";
-import { Meta, useLocalStore } from "utils";
+import { Meta, SortType, useLocalStore } from "utils";
 
 const UserRepos: FC = () => {
   const userReposStore = useLocalStore<UserReposStore>(
     () => new UserReposStore()
   );
-  let navigate = useNavigate();
-  let { user } = useParams();
+  const navigate = useNavigate();
+  const { user } = useParams();
 
   const isLoading = userReposStore.meta === Meta.LOADING;
   const isError = userReposStore.meta === Meta.ERROR;
@@ -30,15 +30,18 @@ const UserRepos: FC = () => {
     [user, navigate]
   );
 
-  const onSearchSubmit = (searchValue: string) => {
-    navigate(ROUTES.USER_REPO(searchValue));
-  };
+  const handleSearchSubmit = useCallback(
+    (searchValue: string) => {
+      navigate(ROUTES.USER_REPO(searchValue));
+    },
+    [navigate]
+  );
 
   useEffect(() => {
     if (user) {
       userReposStore.getUserReposList({
         username: user,
-        direction: "desc",
+        direction: SortType.DESC,
       });
     }
   }, [user, userReposStore]);
@@ -50,7 +53,7 @@ const UserRepos: FC = () => {
           <Wrapper>
             <StyledSearchForm
               placeholder="Введите имя пользователя"
-              onSearchSubmit={onSearchSubmit}
+              onSearchSubmit={handleSearchSubmit}
               isLoading={isLoading}
             />
 

@@ -5,7 +5,6 @@ import {
   observable,
   runInAction,
 } from "mobx";
-import qs from "qs";
 import { HTTPMethod } from "shared/store/ApiStore";
 import RootStore from "shared/store/RootStore";
 import {
@@ -59,9 +58,9 @@ export default class RepoBranchesStore
   }
 
   async getRepoBranches(params: GetRepoBranchesParams): Promise<void> {
-    this._meta = Meta.LOADING;
-    this._branches = [];
+    if (this._meta === Meta.LOADING) return;
 
+    this._meta = Meta.LOADING;
     const requestParams = this.getRepoBranchesRequestParams(params);
     const response = await this._apiStore.request<RepoBranchApi[]>(
       requestParams

@@ -4,3 +4,8 @@ export enum Meta {
   ERROR = "error",
   SUCCESS = "success",
 }
+
+export enum SortType {
+  DESC = "desc",
+  ASC = "asc",
+}

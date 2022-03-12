@@ -9,12 +9,12 @@ import { useNavigate, useParams } from "react-router-dom";
 import { ROUTES } from "routes/ROUTES";
 import { OrgReposStore } from "store/OrgReposStore";
 import styled from "styled-components";
-import { Meta, useLocalStore } from "utils";
+import { Meta, SortType, useLocalStore } from "utils";
 
 const OrgRepos: FC = () => {
   const orgReposStore = useLocalStore<OrgReposStore>(() => new OrgReposStore());
-  let navigate = useNavigate();
-  let { org } = useParams();
+  const navigate = useNavigate();
+  const { org } = useParams();
   const isLoading = orgReposStore.meta === Meta.LOADING;
   const isError = orgReposStore.meta === Meta.ERROR;
 
@@ -27,15 +27,22 @@ const OrgRepos: FC = () => {
     [org, navigate]
   );
 
-  const onSearchSubmit = (searchValue: string) => {
-    navigate(ROUTES.ORG_REPO(searchValue));
-  };
+  const handleSearchSubmit = useCallback(
+    (searchValue: string) => {
+      navigate(ROUTES.ORG_REPO(searchValue));
+    },
+    [navigate]
+  );
+
+  const handleDrawerClose = useCallback(() => {
+    navigate(org ? ROUTES.ORG_REPO(org) : ROUTES.ORG_REPOS);
+  }, [navigate, org]);
 
   useEffect(() => {
     if (org) {
       orgReposStore.getOrganizationReposList({
         org: org,
-        direction: "desc",
+        direction: SortType.DESC,
       });
     }
   }, [org, orgReposStore]);
@@ -47,7 +54,7 @@ const OrgRepos: FC = () => {
           <Wrapper>
             <StyledSearchForm
               placeholder="Введите имя организации"
-              onSearchSubmit={onSearchSubmit}
+              onSearchSubmit={handleSearchSubmit}
               isLoading={isLoading}
             />
 
@@ -62,11 +69,7 @@ const OrgRepos: FC = () => {
 
             <RepoList items={orgReposStore.list} onClick={handleTileClick} />
 
-            <RepoBranchesDrawer
-              onClose={() =>
-                navigate(org ? ROUTES.ORG_REPO(org) : ROUTES.ORG_REPOS)
-              }
-            />
+            <RepoBranchesDrawer onClose={handleDrawerClose} />
           </Wrapper>
         </Col>
       </Row>

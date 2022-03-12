@@ -58,19 +58,15 @@ export default class OrgReposStore implements OrgReposStore, ILocalStore {
       headers: {
         accept: "application/vnd.github.v3+json",
       },
-      data: qs.stringify({
-        type: params.type,
-        sort: params.sort,
-        direction: params.direction,
-        per_page: params.per_page,
-        page: params.page,
-      }),
+      data: qs.stringify({ ...params }),
     };
   }
 
   async getOrganizationReposList(
     params: GetOrganizationReposListParams
   ): Promise<void> {
+    if (this._meta === Meta.LOADING) return;
+
     this._meta = Meta.LOADING;
     this._list = getInitialCollectionModal();
 
@@ -82,15 +78,12 @@ export default class OrgReposStore implements OrgReposStore, ILocalStore {
         try {
           const list: RepoItemModel[] = [];
 
-          for (const item of response.data) {
-            list.push(normalizeRepoItem(item));
-          }
+          response.data.forEach((item) => list.push(normalizeRepoItem(item)));
 
           this._list = normalizeCollection(list, (listItem) => listItem.id);
 
           this._meta = Meta.SUCCESS;
         } catch (error) {
-          console.error(error);
           this._meta = Meta.ERROR;
           this._list = getInitialCollectionModal();
         }
