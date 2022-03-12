@@ -1,2 +1,3 @@
-export { Repos } from "./Repos";
-export { CreateRepo } from "./CreateRepo";
+export { UserRepos } from "./UserRepos";
+export { OrgRepos } from "./OrgRepos";
+export { CreateUserRepo } from "./CreateUserRepo";

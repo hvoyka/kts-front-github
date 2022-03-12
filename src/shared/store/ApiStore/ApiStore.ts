@@ -7,7 +7,7 @@ import {
 } from "./types";
 
 export default class ApiStore implements IApiStore {
-  baseUrl: string;
+  readonly baseUrl: string;
   status!: StatusHTTP;
 
   constructor(baseUrl: string) {

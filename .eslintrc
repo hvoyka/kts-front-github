@@ -2,7 +2,7 @@
   "extends": ["react-app", "plugin:prettier/recommended"],
   "plugins": ["prettier"],
   "rules": {
-    "no-console": "warn",
+    "no-console": ["warn", { "allow": ["warn", "error"] }],
     "prettier/prettier": "error",
     "import/order": [
       "error",
